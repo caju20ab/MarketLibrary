@@ -18,7 +18,7 @@ const ConfirmEmailScreen = () => {
         console.warn ('Sign In');
     }
     const onResendPressed = () => {
-        console.warn ('There are no policies yet mtherfucker');
+        console.warn ('To Do');
     }
     const onSignInPressed = () => {
         navigation.navigate ('SignIn')

@@ -15,11 +15,11 @@ const ConfirmPasswordScreen = () => {
     
     const onSignInPressed = () => {
         navigation.navigate ('SignIn')
-        console.warn ('Lets go Back!!!');
+        console.warn ('Going Back');
     }
     const onSubmitPressed = () => {
         navigation.navigate ('Home')
-        console.warn ('Hahaha den virker ikke  din mongol');
+        console.warn ('To Do');
     }
    
    

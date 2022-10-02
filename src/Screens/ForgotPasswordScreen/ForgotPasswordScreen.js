@@ -14,11 +14,11 @@ const ForgotPasswordScreen = () => {
     
     const onSignInPressed = () => {
         navigation.navigate ('SignIn')
-        console.warn ('Lets go Back!!!');
+        console.warn ('Going back');
     }
     const onSendPressed = () => {
         navigation.navigate ('ConfirmPassword')
-        console.warn ('Hahaha den er ikke sendt din mongol');
+        console.warn ('To do');
     }
    
    
