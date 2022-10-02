@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView } from 'react-native';
 import Logo from '../../../assets/Images/Logo.png'
 import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions';
@@ -17,6 +17,9 @@ import { NavigationContainer } from '@react-navigation/native';
 
 
 const SettingScreen = () => {
+
+    const [user, setUser] = useState({ loggedIn: false });
+
 
     //Definere navigation til at bruge min StackNavigator
         const navigation = useNavigation ();
@@ -98,14 +101,12 @@ const SettingScreen = () => {
             backgroundColor: 'white',
         },
         Menu: {
-            fontFamily: 'normal',
             fontSize: 25,
             fontWeight: 'bold', 
             textAlign: 'left',
             margin: 10,
         },
         Ejendommen: {
-            fontFamily: 'normal',
             fontSize: 25,
             fontWeight: 'bold', 
             textAlign: 'left',

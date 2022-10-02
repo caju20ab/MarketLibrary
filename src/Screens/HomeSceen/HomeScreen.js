@@ -13,8 +13,8 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { TextInput, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LogInScreen from '../LogInScreen/LogInScreen';
-
 import { NavigationContainer } from '@react-navigation/native';
+import { AuthContext } from '../../../context';
 
 
 const HomeScreen = () => {
@@ -44,20 +44,25 @@ const HomeScreen = () => {
 
 //Definere navigation til at bruge min StackNavigator
     const navigation = useNavigation ();
+//Definere SignOut og anvender useContext for at gøre dataen tilgåeligt fra flere komponenter (eks. LogIn)
+    const {signOut} = React.useContext (AuthContext);
+
 
     const handleLogOut = async () => {
         await firebase.auth().signOut().then((data)=>{
-            navigation.navigate ('SignIn')
+            signOut()
         });
     }
 
-
+//Hvis den nuværende bruger ikke er FireBase autoriseret, så skal den returne Not Found
     if (!firebase.auth().currentUser) {
         return <View><Text>Not found</Text></View>;
     }
 
+//Ellers returneres følgende:
     return (
         <SafeAreaView style = {styles.root}>
+            <ScrollView>
 
         <Text style={styles.Menu}>Menu</Text>
 
@@ -86,17 +91,14 @@ const HomeScreen = () => {
         onPress={onArchive}
         />
 
-
-
         <CustomButton
         text= 'Begivenheder'
         onPress={onEvents}
-
-        
+    
         />
         <CustomButton
         text= 'Kontakter'
-        onPress={onSettingScreen}
+        onPress={onContacts}
 
         
         />
@@ -118,8 +120,7 @@ const HomeScreen = () => {
 
 
 
-
-    
+    </ScrollView>
         </SafeAreaView>
 
     )
@@ -134,14 +135,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     Menu: {
-        fontFamily: 'normal',
         fontSize: 25,
         fontWeight: 'bold', 
         textAlign: 'left',
         margin: 10,
     },
     Ejendommen: {
-        fontFamily: 'normal',
         fontSize: 25,
         fontWeight: 'bold', 
         textAlign: 'left',

@@ -10,6 +10,8 @@ import firebase from "firebase/compat";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { TextInput } from 'react-native-paper';
+import { AuthContext } from '../../../context';
+
 
 
 const LogInScreen = () => {
@@ -23,6 +25,7 @@ const LogInScreen = () => {
 
     //Definere navigation til at bruge min StackNavigator
     const navigation = useNavigation ();
+    const {signIn} = React.useContext (AuthContext);
 
     const onSignInPressed = () => {
         return <CustomButton onPress={() => handleSubmit ()} text = 'Login med din bruger' />
@@ -31,7 +34,7 @@ const LogInScreen = () => {
     const handleSubmit = async () => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password).then((data)=>{
-                navigation.navigate ('HomeScreen')
+                signIn();
             });
 
         } catch (error){
@@ -48,12 +51,14 @@ const LogInScreen = () => {
     }
 
  
+
     return (
         <ScrollView>
         <View style = {styles.root}>
-       <Image source = {Logo} style = {[styles.logo, {height: height * 0.3}]} 
-       resizeMode = "contain" 
-       />
+            <Image source = {Logo} style = {[styles.logo, {height: height * 0.3}]} 
+             resizeMode = "contain" 
+            />
+
         <CustomInput placeholder='Email' 
         value={email} 
         setValue = {setEmail}
@@ -75,7 +80,6 @@ const LogInScreen = () => {
         type = 'TERTIARY'
         />
         
-        <SocialSignInButtons/>
 
 
         <CustomButton 
