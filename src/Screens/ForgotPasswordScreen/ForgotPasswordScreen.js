@@ -4,7 +4,6 @@ import Logo from '../../../assets/Images/Logo.png'
 import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions';
 import CustomInput from '../../Components/CustomInput';
 import CustomButton from '../../Components/CustomButton';
-import SocialSignInButtons from '../../Components/SocialSignInButtons/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/native';
 
 const ForgotPasswordScreen = () => {

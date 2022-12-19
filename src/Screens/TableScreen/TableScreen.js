@@ -1,28 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView } from 'react-native';
-import Logo from '../../../assets/Images/Logo.png'
-import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions';
-import CustomInput from '../../Components/CustomInput';
-import CustomButton from '../../Components/CustomButton';
-import Tabs from '../../Components/BottomNav';
-import SocialSignInButtons from '../../Components/SocialSignInButtons';
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TouchableOpacity,} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from "firebase/compat";
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { TextInput, Button } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import LogInScreen from '../LogInScreen/LogInScreen';
-import { NavigationContainer } from '@react-navigation/native';
+import { FlatList } from 'react-native-gesture-handler';
+import { v4 as uuidv4 } from 'uuid';
+import 'firebase/firestore';
+
+
 
 
 const TableScreen = () => {
 
+  const firestore = firebase.firestore;
+  const db = firebase.firestore();
+
   const [user, setUser] = useState({ loggedIn: false });
+  const [books, setBooks] = useState([])
+
 
 
     //Definere navigation til at bruge min StackNavigator
-        const navigation = useNavigation ();
+       const navigation = useNavigation ();
     
         function onAuthStateChange(callback) {
             return firebase.auth().onAuthStateChanged(user => {
@@ -40,22 +38,109 @@ const TableScreen = () => {
               unsubscribe();
             };
           }, []);
-    
-    
-        if (!firebase.auth().currentUser) {
-            return <View><Text>Not found</Text></View>;
-        }
-    
-        return (
-            <SafeAreaView>
 
-                <Text>Tables</Text>
-    
+
+          useEffect(() => {
+            const listOfBooks = firebase.firestore()
+              .collection('books')
+              .onSnapshot((querySnapshot) => {
+                const documents = [];
+                querySnapshot.forEach((doc) => {
+                  documents.push({ ...doc.data(), id: doc.id });
+                });
+                setBooks(documents);
+              });
+        
+            return () => listOfBooks();
+          }, []);
+
+
+      
+
+        return (
+            
+
+              <View>
+                <Text>Books for sale</Text>
+
+                <FlatList
+                  data={books}
+                  keyExtractor={(item) => item.id}
+                  renderItem={({ item }) => (
           
-            </SafeAreaView>
-    
+                    <TouchableOpacity onPress={() => navigation.navigate('BookDetails', { book: item })}>
+                      <Text style={styles.UsersDisplayText}>
+                        {item.Title} <Text> made by </Text>
+                        {item.Author}
+                      </Text>
+                    </TouchableOpacity>
+                    )}
+                />
+              </View>
         )
-    
     }
+    const BookDetails = ({ route }) => {
+      const { book } = route.params;
+      const navigation = useNavigation();
     
-    export default TableScreen
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>{book.Title}</Text>
+          <Text style={styles.author}>{book.Author}</Text>
+    
+          <TouchableOpacity onPress={() => navigation.navigate('TableScreen')}>
+            <Text>Go back</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    };
+
+export default TableScreen
+
+
+
+
+
+
+const styles = StyleSheet.create({
+  UsersDisplayText:{
+    textAlign: 'center',
+    marginVertical: 8,
+    fontSize: 16,
+    fontStyle: "black"
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 10,
+  },
+  author: {
+    fontSize: 18,
+    color: 'grey',
+    marginBottom: 20,
+  },
+  image: {
+    width: 200,
+    height: 300,
+    resizeMode: 'contain',
+    marginBottom: 20,
+  },
+  description: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+
+
+
+
+
+
+
+
+
+
+});

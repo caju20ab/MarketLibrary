@@ -12,10 +12,12 @@ import ContactScreen from './src/Screens/ContactScreen';
 import EventScreen from './src/Screens/EventScreen';
 import SupportScreen from './src/Screens/SupportScreen';
 import TableScreen from './src/Screens/TableScreen';
+import BookDetails from './src/Screens/TableScreen';
+
 import NotificationScreen from './src/Screens/NotificationScreen';
-import Navigation from './src/Navigation';
 import {initializeApp} from 'firebase/app'
 import firebase from 'firebase/compat';
+import { getFirestore } from "firebase/firestore";
 import HomeScreen from './src/Screens/HomeSceen/HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -25,6 +27,7 @@ import SettingScreen from './src/Screens/SettingScreen';
 import Splash from './src/Screens/SplashScreen';
 import { set } from 'react-native-reanimated';
 import { AuthContext } from './context';
+
 
 //Add SDKs for the i want to use 
 
@@ -36,8 +39,12 @@ const firebaseConfig = {
   projectId: "awesomeproject-2f66b",
   storageBucket: "awesomeproject-2f66b.appspot.com",
   messagingSenderId: "11773658731",
-  appId: "1:11773658731:web:309017ed98e341a3ad132e"
+  appId: "1:11773658731:web:309017ed98e341a3ad132e",
+  databaseURL: "https://awesomeproject-2f66b-default-rtdb.europe-west1.firebasedatabase.app"
 };
+
+const db = getFirestore(App)
+
 
 const AuthStack = createNativeStackNavigator ();
 const HomeStack = createNativeStackNavigator ();
@@ -51,16 +58,19 @@ const Tabs = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 
-
 const App = () => {
 
 
   const [user, setUser] = useState({ loggedIn: false });
 
+  //Inspiration fra øvelsesholdene
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
 
+
+
+    //Inspiration fra øvelsesholdene
   function onAuthStateChange(callback) {
     return firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -71,6 +81,7 @@ const App = () => {
     });
   }
 
+    //Inspiration fra øvelsesholdene
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser);
     return () => {
@@ -100,6 +111,7 @@ const App = () => {
   const TableStackScreen = () => (
     <TableStack.Navigator>
       <TableStack.Screen name="Tables" component={TableScreen}/>
+      <TableStack.Screen name="BookDetails" component={BookDetails}/>
     </TableStack.Navigator>
   )
 
@@ -116,15 +128,17 @@ const App = () => {
   )
 
   const TabsScreen = () => (
-    <Tabs.Navigator>
-        <Tabs.Screen name='Home' component={HomeStackScreen}/>
+    <Tabs.Navigator >
+        <Tabs.Screen name='HomeScreen' component={HomeStackScreen}/>
         <Tabs.Screen name='NotificationScreen' component={NotificationStackScreen}/>
         <Tabs.Screen name='TableScreen' component={TableStackScreen}/>
-        <Tabs.Screen name='EventScreen' component={EventStackScreen}/>
+        <Tabs.Screen name='Noget' component={EventStackScreen} />
         <Tabs.Screen name='ArchiveScreen' component={ArchiveStackScreen}/>
     </Tabs.Navigator>
   )
 
+  //https://www.youtube.com/watch?v=nQVCkqvU1uE anvendt til at styre navigationen med en splash screen når der loades og userToken til at afgøre om brugeren er logget ind eller ej. 
+  //
   
   const [isLoading, setIsLoading] = React.useState(true)
   const [userToken, setUserToken] = React.useState (null);
@@ -146,7 +160,7 @@ const App = () => {
 
 }})
 
-//Når komponenten forsøger at loade skal 
+
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
