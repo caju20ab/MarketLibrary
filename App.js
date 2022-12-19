@@ -12,8 +12,7 @@ import ContactScreen from './src/Screens/ContactScreen';
 import EventScreen from './src/Screens/EventScreen';
 import SupportScreen from './src/Screens/SupportScreen';
 import TableScreen from './src/Screens/TableScreen';
-import BookDetails from './src/Screens/TableScreen';
-
+import BookDetails from './src/Screens/BookDetailsScreen';
 import NotificationScreen from './src/Screens/NotificationScreen';
 import {initializeApp} from 'firebase/app'
 import firebase from 'firebase/compat';

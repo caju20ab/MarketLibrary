@@ -6,8 +6,7 @@ import { Button } from 'react-native-paper';
 import CustomButton from '../../Components/CustomButton';
 import CustomInput from '../../Components/CustomInput';
 import { collection, addDoc, getDocs, getFirestore } from "firebase/firestore"; 
-
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 
 const NotificationScreen = () => {
@@ -21,6 +20,7 @@ const NotificationScreen = () => {
   const [releaseDate, setReleaseDate] = useState ('');
   const [isbnNumber, setIsbnNumber] = useState ('');
   const [condition, setCondition] = useState ('');
+  const [image, setImage] = useState ('')
 
 
 
@@ -49,7 +49,31 @@ const NotificationScreen = () => {
             return <View><Text>Not found</Text></View>;
         }
 
+        const selectImage = () => {
+          const options = {
+            title: 'Select Picture',
+            storageOptions: {
+              skipBackup: true,
+              path: 'images',
+            },
+          }
 
+          launchCamera(options, (response) => {
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+            } else if (response.error) {
+              console.log('ImagePicker Error: ', response.error);
+            } else {
+              // You can also display the image using data:
+              // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+        
+              let source = response.uri;
+              setImage(source);
+            }
+          });
+        };
+
+        
 
         const createListing = async () => {
           try {
@@ -61,13 +85,16 @@ const NotificationScreen = () => {
               releaseDate: releaseDate,
               isbnNumber: isbnNumber ,
               Condition: condition,
-              ListedBy: user.user.email
+              ListedBy: user.user.email,
+              Image: image
             });
             console.log("Document written with ID: ", docRef.id);
           } catch (e) {
             console.error("Error adding document: ", e);
           }
         };
+
+        
       
     
         return (
@@ -124,7 +151,10 @@ const NotificationScreen = () => {
                   secureTextEntry = {false}
                 />
 
+                <Button onPress={() => selectImage()}> Select Image </Button>
+
                 <Button onPress={createListing} style = {styles.CreateButton} title="Create" Text="Create" />
+                {image && <Image source={{uri: image}} style={{width: 200, height: 200}} />}
               </View>
 
     

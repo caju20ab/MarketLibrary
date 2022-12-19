@@ -5,11 +5,12 @@ import firebase from "firebase/compat";
 import { FlatList } from 'react-native-gesture-handler';
 import { v4 as uuidv4 } from 'uuid';
 import 'firebase/firestore';
+import BookDetails from '../BookDetailsScreen/BookDetailsScreen';
 
 
 
 
-const TableScreen = () => {
+const TableScreen = ({navigation, route}) => {
 
   const firestore = firebase.firestore;
   const db = firebase.firestore();
@@ -18,9 +19,11 @@ const TableScreen = () => {
   const [books, setBooks] = useState([])
 
 
+    //Navigation
+
+
 
     //Definere navigation til at bruge min StackNavigator
-       const navigation = useNavigation ();
     
         function onAuthStateChange(callback) {
             return firebase.auth().onAuthStateChanged(user => {
@@ -58,43 +61,31 @@ const TableScreen = () => {
       
 
         return (
-            
-
               <View>
                 <Text>Books for sale</Text>
 
                 <FlatList
-                  data={books}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-          
-                    <TouchableOpacity onPress={() => navigation.navigate('BookDetails', { book: item })}>
-                      <Text style={styles.UsersDisplayText}>
-                        {item.Title} <Text> made by </Text>
-                        {item.Author}
-                      </Text>
+                    numColumns={2}
+                    data={books}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+
+                     <TouchableOpacity
+                      style={{ flex: 1, margin: 10 }}
+                      onPress={() => navigation.navigate('BookDetails', { books: item })}
+                    >
+                       <View style={{ flex: 1, backgroundColor: '#eee', borderRadius: 10 }}>
+                          <Text style={styles.UsersDisplayText}>
+                            {item.Title} <Text> made by </Text>{item.Author}
+                           </Text>
+                        </View>
                     </TouchableOpacity>
-                    )}
-                />
+  )}
+/>
               </View>
         )
     }
-    const BookDetails = ({ route }) => {
-      const { book } = route.params;
-      const navigation = useNavigation();
     
-      return (
-        <View style={styles.container}>
-          <Text style={styles.title}>{book.Title}</Text>
-          <Text style={styles.author}>{book.Author}</Text>
-    
-          <TouchableOpacity onPress={() => navigation.navigate('TableScreen')}>
-            <Text>Go back</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    };
-
 export default TableScreen
 
 
