@@ -6,13 +6,16 @@ import { Button } from 'react-native-paper';
 import CustomButton from '../../Components/CustomButton';
 import CustomInput from '../../Components/CustomInput';
 import { collection, addDoc, getDocs, getFirestore } from "firebase/firestore"; 
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import * as ImagePicker from 'react-native-image-picker';
+
+
 
 
 const NotificationScreen = () => {
-  const db = getFirestore(NotificationScreen)
+  const db = getFirestore()
   const [user, setUser] = useState({ loggedIn: false });
   const [books, setBooks] = useState ([])
+  const [userBooks, setUserBooks] = useState([]);
   const [title, setTitle] = useState ('')
   const [author, setAuthor] = useState ('');
   const [edition, setEdition] = useState ('');
@@ -56,47 +59,41 @@ const NotificationScreen = () => {
               skipBackup: true,
               path: 'images',
             },
-          }
+          }}
 
-          launchCamera(options, (response) => {
-            if (response.didCancel) {
-              console.log('User cancelled image picker');
-            } else if (response.error) {
-              console.log('ImagePicker Error: ', response.error);
-            } else {
-              // You can also display the image using data:
-              // let source = { uri: 'data:image/jpeg;base64,' + response.data };
         
-              let source = response.uri;
-              setImage(source);
+          const createListing = async () => {
+            try {
+              const docRef = await addDoc(collection(db, "books"), {
+                Title: title,
+                Author: author,
+                Edition: edition,
+                Course: course,
+                releaseDate: releaseDate,
+                isbnNumber: isbnNumber ,
+                Condition: condition,
+                ListedBy: user.user.email,
+              });
+              console.log("Document written with ID: ", docRef.id);
+          
+              // Update the userBooks state with the new book object
+              setBooks([...books, {
+                Title: title,
+                Author: author,
+                Edition: edition,
+                Course: course,
+                releaseDate: releaseDate,
+                isbnNumber: isbnNumber ,
+                Condition: condition,
+                ListedBy: user.user.email,
+                id: docRef.id, // add the id field here
+              }]);
+            } catch (e) {
+              console.error("Error adding document: ", e);
             }
-          });
-        };
+          };
 
-        
-
-        const createListing = async () => {
-          try {
-          const docRef = await addDoc(collection(db, "books"), {
-              Title: title,
-              Author: author,
-              Edition: edition,
-              Course: course,
-              releaseDate: releaseDate,
-              isbnNumber: isbnNumber ,
-              Condition: condition,
-              ListedBy: user.user.email,
-              Image: image
-            });
-            console.log("Document written with ID: ", docRef.id);
-          } catch (e) {
-            console.error("Error adding document: ", e);
-          }
-        };
-
-        
       
-    
         return (
             <SafeAreaView>
               <View>

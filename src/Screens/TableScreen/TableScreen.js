@@ -5,7 +5,6 @@ import firebase from "firebase/compat";
 import { FlatList } from 'react-native-gesture-handler';
 import { v4 as uuidv4 } from 'uuid';
 import 'firebase/firestore';
-import BookDetails from '../BookDetailsScreen/BookDetailsScreen';
 
 
 

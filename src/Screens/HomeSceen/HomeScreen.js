@@ -1,13 +1,74 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView } from 'react-native';
-import CustomButton from '../../Components/CustomButton';
+import React, {useState, useEffect, useId} from 'react';
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TouchableOpacity,} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from "firebase/compat";
+import { FlatList } from 'react-native-gesture-handler';
+import { v4 as uuidv4 } from 'uuid';
 import { AuthContext } from '../../../context';
+import CustomButton from '../../Components/CustomButton';
+import { collection, addDoc, getDocs, getFirestore, doc, find } from "firebase/firestore"; 
+
 
 
 const HomeScreen = () => {
 
+    const firestore = firebase.firestore;
+    const db = firebase.firestore();
+    
+    const [user, setUser] = useState({ loggedIn: false });
+    const [userData, setUserData] = useState('');
+
+
+    function onAuthStateChange(callback) {
+        return firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            callback({loggedIn: true, user: user});
+          } else {
+            callback({loggedIn: false});
+          }
+        });
+      }
+
+
+      useEffect(() => {
+        const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            // Get the user's email address from the currentUser object
+            const userEmail = user.email;
+      
+            // Use the user's email address to retrieve the user's data from the Firestore database
+            firebase
+              .firestore()
+              .collection("users")
+              .where("email", "==", userEmail)
+              .get()
+              .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                  // Set the userData state with the user's data from the Firestore database
+                  setUserData(doc.data());
+                });
+              })
+              .catch(error => {
+                console.log("Error getting documents:", error);
+              });
+          } else {
+            // Reset the userData state to an empty array when the user is not logged in
+            setUserData([]);
+          }
+        });
+      
+        // Unsubscribe from the auth state change event when the component unmounts
+        return () => unsubscribe();
+      }, [user]);
+
+  console.log(userData)
+
+
+
+
+    
+    
+    //Navigationerne
     const onSettingScreen = () => {
         navigation.navigate ('SettingScreen')
     }
@@ -16,9 +77,6 @@ const HomeScreen = () => {
     }
     const onArchive = () => {
         navigation.navigate ('ArchiveScreen')
-    }
-    const onEvents = () => {
-        navigation.navigate ('EventScreen')
     }
     const onContacts = () => {
         navigation.navigate ('ContactScreen')
@@ -51,42 +109,23 @@ const HomeScreen = () => {
 //Ellers returneres følgende:
     return (
         <SafeAreaView style = {styles.root}>
-            <ScrollView>
-
-        <Text style={styles.Menu}>Menu</Text>
 
 
-        <Text style={styles.CurrentUser}>{firebase.auth().currentUser.fullname}</Text>
+            <Text style={styles.Menu}> {userData.fullname}'s Profile</Text>
 
-        <CustomButton  
-        text= 'Indstillinger'
-        onPress={onSettingScreen}
-
-        />
-
-        <Text style={styles.CurrentUser}>{firebase.auth().currentUser.email}</Text>
-
-
-        <Text style={styles.Ejendommen}>Ejendommen</Text>
-
-
-        <CustomButton  
-        text= 'Opslagstavle'
-        onPress={onTable}
-        />
 
         <CustomButton
-        text= 'Arkiv'
+        text= 'My Listings'
         onPress={onArchive}
         />
 
-        <CustomButton
-        text= 'Begivenheder'
-        onPress={onEvents}
-    
+        <CustomButton  
+        text= 'Profile Settings'
+        onPress={onSettingScreen}
         />
+
         <CustomButton
-        text= 'Kontakter'
+        text= 'Ledig Skærm til en feature (Hedder ContractScreen i fil-mappe)'
         onPress={onContacts}
 
         
@@ -96,7 +135,6 @@ const HomeScreen = () => {
         onPress={onApartments}
 
 
-        
         />
         <CustomButton
         text= 'Support'
@@ -109,7 +147,7 @@ const HomeScreen = () => {
 
 
 
-    </ScrollView>
+   
         </SafeAreaView>
 
     )

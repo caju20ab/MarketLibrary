@@ -42,7 +42,7 @@ const firebaseConfig = {
   databaseURL: "https://awesomeproject-2f66b-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
-const db = getFirestore(App)
+const db = getFirestore()
 
 
 const AuthStack = createNativeStackNavigator ();
@@ -132,7 +132,6 @@ const App = () => {
         <Tabs.Screen name='NotificationScreen' component={NotificationStackScreen}/>
         <Tabs.Screen name='TableScreen' component={TableStackScreen}/>
         <Tabs.Screen name='Noget' component={EventStackScreen} />
-        <Tabs.Screen name='ArchiveScreen' component={ArchiveStackScreen}/>
     </Tabs.Navigator>
   )
 

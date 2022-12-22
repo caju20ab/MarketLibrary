@@ -189,6 +189,7 @@ const ApartmentScreen = () => {
       {groups.length > 0 && (
         <View>
           <Text style = {styles.YourGroupsText}>Your groups:</Text>
+          <Text>{}</Text>
           <FlatList
             data={groups}
             renderItem={({ item }) => (
