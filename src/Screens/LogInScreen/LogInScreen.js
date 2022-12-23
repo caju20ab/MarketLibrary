@@ -7,6 +7,7 @@ import CustomButton from '../../Components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import firebase from "firebase/compat";
 import { AuthContext } from '../../../context';
+import { Button, TextInput } from 'react-native-paper';
 
 
 
@@ -23,10 +24,8 @@ const LogInScreen = () => {
     const navigation = useNavigation ();
     const {signIn} = React.useContext (AuthContext);
 
-    const onSignInPressed = () => {
-        return <CustomButton onPress={() => handleSubmit ()} text = 'Login med din bruger' />
-    }
 
+    //Håndtere vores login med den indbyggede Firebase metode signInWithEmailAndPassword
     const handleSubmit = async () => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password).then((data)=>{
@@ -55,34 +54,41 @@ const LogInScreen = () => {
              resizeMode = "contain" 
             />
 
-        <CustomInput placeholder='Email' 
+        <TextInput style = {styles.inputFields} placeholder='Email' 
         value={email} 
         setValue = {setEmail}
+        onChangeText = {setEmail}
         />
 
-        <CustomInput 
+        <TextInput style = {styles.inputFields}
         placeholder='Password' 
         value={password} 
         setValue = {setPassword}
+        onChangeText = {setPassword}
         secureTextEntry = {true}
         />
 
-        {onSignInPressed()}
+        <Button 
+        style={styles.loginButton} 
+        onPress={() => handleSubmit ()} 
+        text = 'Login with your user'
+        > Login </Button>
 
-
-        <CustomButton 
+        <Button 
+        style={styles.loginButton} 
         text='Forgot password?' 
         onPress={onForgotPassword} 
         type = 'TERTIARY'
-        />
+        > Forgot your password? </Button>
         
-
-
-        <CustomButton 
+        <Button 
+        style={styles.loginButton} 
         text='Dont have an account, create one?' 
         onPress={onSignUpPressed} 
         type = 'TERTIARY'
-        />
+        > Create an account? </Button>
+        
+
         </View>
         </ScrollView>
     )
@@ -91,13 +97,39 @@ const LogInScreen = () => {
 const styles = StyleSheet.create({
     root: {
         alignItems: 'center',
-        padding: 20
+        padding: 20,
+        backgroundColor: '#778899'
+        
     },
     logo: {
-        width: '100%',
-        height: '80%',
+        width: '150%',
+        height: '100%',
         maxHeight: 200,
-    }
+        shadowColor: '#ffffff'
+    },
+    inputFields: {
+        backgroundColor: '#fffafa',
+        width: 250,
+        height: 25,
+        borderColor: '#ffffff',
+        borderWidth: 6,
+        borderRadius: 6,
+        paddingHorizontal: 10,
+        paddingVertical: 2,
+        marginVertical: 15,
+      },
+    loginButton: {
+        backgroundColor: '#ffffff',
+        width: '100%',
+        padding: 5,
+        marginVertical: 15,
+        alignItems: "center",
+        borderRadius: 5,
+        text: "black"
+    },
+    Text: {
+        backgroundColor: 'white',
+      },
 });
 
 export default LogInScreen

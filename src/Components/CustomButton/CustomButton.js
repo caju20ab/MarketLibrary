@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 
         padding: 15,
 
-        marginVertical: 5,
+        marginVertical: 10,
 
         alignItems: "center",
 

@@ -19,6 +19,7 @@ const NotificationScreen = ({navigation, route}) => {
   const [userBooks, setUserBooks] = useState([]);
   const [title, setTitle] = useState ('')
   const [author, setAuthor] = useState ('');
+  const [price, setPrice] = useState ('')
   const [edition, setEdition] = useState ('');
   const [course, setCourse] = useState ('');
   const [releaseDate, setReleaseDate] = useState ('');
@@ -70,12 +71,29 @@ const NotificationScreen = ({navigation, route}) => {
         const resetImage = () => {
           setImage('')
         }
+
+        const resetInputFields = () => {
+          setTitle("");
+          setAuthor("");
+          setEdition("");
+          setCourse("");
+          setReleaseDate("");
+          setIsbnNumber("");
+          setCondition("");
+          setImage("");
+        };
+
         
           const createListing = async () => {
+            if (title === "" || author === "" || edition === "" || course === "" || releaseDate === "" || isbnNumber === "" || condition === "" || image === "") {
+              alert("All fields are required!");
+              return;
+            }
             try {
               const docRef = await addDoc(collection(db, "books"), {
                 Title: title,
                 Author: author,
+                Price: price,
                 Edition: edition,
                 Course: course,
                 releaseDate: releaseDate,
@@ -84,24 +102,29 @@ const NotificationScreen = ({navigation, route}) => {
                 ListedBy: user.user.email,
                 Image: image
               });
+              resetInputFields()
+              alert("New listing created")
               console.log("Document written with ID: ", docRef.id);
           
               // Update the userBooks state with the new book object
               setBooks([...books, {
                 Title: title,
                 Author: author,
+                Price: price,
                 Edition: edition,
                 Course: course,
                 releaseDate: releaseDate,
                 isbnNumber: isbnNumber ,
                 Condition: condition,
                 ListedBy: user.user.email,
-                id: docRef.id, // add the id field here
+                Image: image
               }]);
             } catch (e) {
               console.error("Error adding document: ", e);
             }
           };
+
+
 
       
         return (
@@ -122,6 +145,13 @@ const NotificationScreen = ({navigation, route}) => {
                   value={author} 
                   onChangeText={(author) => setAuthor(author)}
                   setValue = {setAuthor}
+                  secureTextEntry = {false}
+                />
+                <TextInput style = {styles.inputFields}
+                  placeholder="Price"
+                  value={title} 
+                  onChangeText={(price) => setTitle(price)}
+                  setValue = {setPrice}
                   secureTextEntry = {false}
                 />
                 <TextInput style = {styles.inputFields}
@@ -161,8 +191,15 @@ const NotificationScreen = ({navigation, route}) => {
                 />
 
                 <Button onPress={() => navigation.navigate('PhotoScreen') }> Select Image </Button>
-
-                <Text>Image Selected: {image} </Text>
+                <Image
+                               source={{ uri: image }}
+                               style={{
+                                 width: 100,
+                                 height: 50,
+                                 borderRadius: 10,
+                                 marginTop: 10,
+                               }}
+                />
 
 
                 <Button onPress={resetImage} style = {styles.CreateButton} title="Reset Image" Text="Reset Image">Reset Image</Button>

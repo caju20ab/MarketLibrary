@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useId} from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TouchableOpacity,} from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TouchableOpacity, Button} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from "firebase/compat";
 import { FlatList } from 'react-native-gesture-handler';
@@ -63,11 +63,7 @@ const HomeScreen = () => {
 
   console.log(userData)
 
-
-
-
-    
-    
+ 
     //Navigationerne
     const onSettingScreen = () => {
         navigation.navigate ('SettingScreen')
@@ -111,74 +107,92 @@ const HomeScreen = () => {
         <SafeAreaView style = {styles.root}>
 
 
-            <Text style={styles.Menu}> {userData.fullname}'s Profile</Text>
+            <Text style={styles.Text}> Hi {userData.fullname}</Text>
 
 
-        <CustomButton
+        <TouchableOpacity 
+        style={styles.button} 
+        title = "My Listings"
         text= 'My Listings'
         onPress={onArchive}
-        />
+        /> 
 
-        <CustomButton  
+        <TouchableOpacity 
+        style={styles.button}    
+        title = "Profile Settings"   
         text= 'Profile Settings'
         onPress={onSettingScreen}
         />
 
-        <CustomButton
+        <TouchableOpacity 
+        style={styles.button}    
+        title = "Ledig skærm"   
         text= 'Ledig Skærm til en feature (Hedder ContractScreen i fil-mappe)'
         onPress={onContacts}
-
-        
         />
-        <CustomButton
+
+        <TouchableOpacity 
+        style={styles.button}    
+        title = "Lejligheder & beboere"   
         text= 'Lejligheder & Beboere'
         onPress={onApartments}
-
-
         />
-        <CustomButton
+
+        <TouchableOpacity 
+        style={styles.button}    
+        title = "Support"   
         text= 'Support'
         onPress={onSupport}
-
-
-        
         />
-        <CustomButton onPress={() => handleLogOut()} text= "Log ud" />
 
+        <TouchableOpacity 
+        style={styles.button}    
+        title = "Log out"    
+        onPress={() => handleLogOut()} 
+        text= "Log ud" 
+        />
 
-
-   
         </SafeAreaView>
-
     )
-
 }
 
 
 const styles = StyleSheet.create({
     root: {
+        alignItems: 'center',
         padding: 20,
-        marginVertical: 0,
-        backgroundColor: 'white',
+        backgroundColor: '#708090'
+        
     },
-    Menu: {
-        fontSize: 25,
-        fontWeight: 'bold', 
-        textAlign: 'left',
-        margin: 10,
+    inputFields: {
+        backgroundColor: '#fffafa',
+        width: 250,
+        height: 25,
+        borderColor: '#ffffff',
+        borderWidth: 6,
+        borderRadius: 6,
+        paddingHorizontal: 10,
+        paddingVertical: 2,
+        marginVertical: 15,
+      },
+    button: {
+        backgroundColor: '#ffffff',
+        width: '80%%',
+        padding: 20,
+        marginVertical: 10,
+        alignItems: "center",
+        borderRadius: 10,
+        borderWidth: 5,
+        borderColor: "#87ceeb",
+        text: "#87ceeb",
     },
-    Ejendommen: {
-        fontSize: 25,
-        fontWeight: 'bold', 
-        textAlign: 'left',
-        margin: 20,
-    },
-    CurrentUser: {
-        fontSize: 10
-    
-
-    }
-
+    Text: {
+        color: "#87ceeb",
+        fontSize: 30,
+        fontStyle: 'Italic',
+        fontWeight: 'bold',
+        letterSpacing: 2,
+      },
 })
 
 export default HomeScreen
