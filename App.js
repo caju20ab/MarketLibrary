@@ -26,6 +26,8 @@ import SettingScreen from './src/Screens/SettingScreen';
 import Splash from './src/Screens/SplashScreen';
 import { set } from 'react-native-reanimated';
 import { AuthContext } from './context';
+import ImageScreen from './src/Screens/CameraScreen/Image';
+import PhotoScreen from './src/Screens/CameraScreen/Camera';
 
 
 //Add SDKs for the i want to use 
@@ -104,6 +106,9 @@ const App = () => {
   const NotificationStackScreen = () => (
     <NotifactionStack.Navigator>
       <NotifactionStack.Screen name="Notifications" component={NotificationScreen}/>
+      <NotifactionStack.Screen name="PhotoScreen" component={PhotoScreen}/>
+      <NotifactionStack.Screen name="ImageScreen" component={ImageScreen}/>
+
     </NotifactionStack.Navigator>
   )
 

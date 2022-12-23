@@ -60,9 +60,9 @@ const TableScreen = ({navigation, route}) => {
       
 
         return (
-              <View>
-                <Text>Books for sale</Text>
-
+              <View style = {styles.container}>
+                <View>
+                <Text style = {styles.title}>Browse books</Text>
                 <FlatList
                     numColumns={2}
                     data={books}
@@ -70,17 +70,27 @@ const TableScreen = ({navigation, route}) => {
                     renderItem={({ item }) => (
 
                      <TouchableOpacity
-                      style={{ flex: 1, margin: 10 }}
+                      style={styles.TouchableOpacity}
                       onPress={() => navigation.navigate('BookDetails', { books: item })}
                     >
                        <View style={{ flex: 1, backgroundColor: '#eee', borderRadius: 10 }}>
                           <Text style={styles.UsersDisplayText}>
-                            {item.Title} <Text> made by </Text>{item.Author}
+                            {item.Title} 
+                            <Image
+                               source={{ uri: item.Image }}
+                               style={{
+                                 width: 100,
+                                 height: 50,
+                                 borderRadius: 10,
+                                 marginTop: 10,
+                               }}
+                />
                            </Text>
                         </View>
                     </TouchableOpacity>
   )}
 />
+              </View>
               </View>
         )
     }
@@ -92,17 +102,39 @@ export default TableScreen
 
 
 
+
 const styles = StyleSheet.create({
+  container:{
+    backgroundColor: '#fffacd',
+
+
+
+  },
+  title:{
+        color: "#add8e6",
+        fontSize: 22,
+        textAlign: 'center',
+        fontWeight: 'bold',
+  },
+
+  TouchableOpacity: {
+    flex: 1,
+    margin: 10,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
+    padding: 20,
+    alignItems: 'center',
+  },
   UsersDisplayText:{
     textAlign: 'center',
     marginVertical: 8,
     fontSize: 16,
     fontStyle: "black"
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 20,
   },
   title: {
     fontSize: 24,
@@ -113,16 +145,7 @@ const styles = StyleSheet.create({
     color: 'grey',
     marginBottom: 20,
   },
-  image: {
-    width: 200,
-    height: 300,
-    resizeMode: 'contain',
-    marginBottom: 20,
-  },
-  description: {
-    fontSize: 16,
-    marginBottom: 20,
-  },
+ 
 
 
 
