@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TextInput, Modal, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from "firebase/compat";
 import { Button } from 'react-native-paper';
@@ -8,11 +8,11 @@ import CustomInput from '../../Components/CustomInput';
 import { collection, addDoc, getDocs, getFirestore } from "firebase/firestore"; 
 import * as ImagePicker from 'react-native-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import DatePicker from 'react-native-datepicker';
 
 
 
-
-const NotificationScreen = ({navigation, route}) => {
+const SellScreen = ({navigation, route}) => {
   const db = getFirestore()
   const [user, setUser] = useState({ loggedIn: false });
   const [books, setBooks] = useState ([])
@@ -24,12 +24,9 @@ const NotificationScreen = ({navigation, route}) => {
   const [course, setCourse] = useState ('');
   const [releaseDate, setReleaseDate] = useState ('');
   const [isbnNumber, setIsbnNumber] = useState ('');
-  const [condition, setCondition] = useState ('');
-  const [image, setImage] = useState ('')
-
-  console.log(image)
-
-
+  const [condition, setCondition] = useState ('new');
+  const [image, setImage] = useState (null)
+  const [showList, setShowList] = useState('');
 
 
   //Definere navigation til at bruge min StackNavigator
@@ -56,11 +53,6 @@ const NotificationScreen = ({navigation, route}) => {
             return <View><Text>Not found</Text></View>;
         }
 
-        //Fanger Image fra Image.js, så vi kan sætte de i createListing Array
-
-       /*useEffect(() => {
-          setImage(route.params.image);
-        }, [route.params.image]);*/
 
         useEffect(() => {
           if (route.params && route.params.image) {
@@ -79,9 +71,18 @@ const NotificationScreen = ({navigation, route}) => {
           setCourse("");
           setReleaseDate("");
           setIsbnNumber("");
-          setCondition("");
-          setImage("");
+          setCondition("new");
+          setImage(null);
         };
+
+        //DatePicker options
+        const options = [
+          { label: 'New', value: 'new' },
+          { label: 'Like new', value: 'like new' },
+          { label: 'Very good', value: 'very good' },
+          { label: 'Good', value: 'good' },
+          { label: 'Acceptable', value: 'acceptable' },
+        ];
 
         
           const createListing = async () => {
@@ -131,7 +132,7 @@ const NotificationScreen = ({navigation, route}) => {
             <SafeAreaView>
 
               <ScrollView>
-              <View style = {styles.containter}>
+              <View style = {styles.root}>
                 <Text style = {styles.title}>Create a listing</Text>
                 <TextInput style = {styles.inputFields}
                   placeholder="Title"
@@ -149,8 +150,8 @@ const NotificationScreen = ({navigation, route}) => {
                 />
                 <TextInput style = {styles.inputFields}
                   placeholder="Price"
-                  value={title} 
-                  onChangeText={(price) => setTitle(price)}
+                  value={price} 
+                  onChangeText={(price) => setPrice(price)}
                   setValue = {setPrice}
                   secureTextEntry = {false}
                 />
@@ -168,12 +169,27 @@ const NotificationScreen = ({navigation, route}) => {
                   setValue = {setCourse}
                   secureTextEntry = {false}
                 />
-                <TextInput style = {styles.inputFields}
-                  placeholder="Release date"
-                  value={releaseDate} 
-                  onChangeText={(releaseDate) => setReleaseDate(releaseDate)}
-                  setValue = {setReleaseDate}
-                  secureTextEntry = {false}
+                <DatePicker
+                  style={{width: 200}}
+                  date={releaseDate}  // This is the state variable for the release date
+                  mode="date"
+                  placeholder="Select release date"
+                  format="YYYY-MM-DD"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  customStyles={{
+                    dateIcon: {
+                      position: 'absolute',
+                      left: 0,
+                      top: 4,
+                      marginLeft: 0
+                    },
+                    dateInput: {
+                      marginLeft: 36
+                    }
+                  }}
+                  onDateChange={(date) => {setReleaseDate(date)}}  // This function is called when the user selects a date
+
                 />
                  <TextInput style = {styles.inputFields}
                   placeholder="ISBN number"
@@ -182,13 +198,33 @@ const NotificationScreen = ({navigation, route}) => {
                   setValue = {setIsbnNumber}
                   secureTextEntry = {false}
                 />
-                 <TextInput style = {styles.inputFields}
-                  placeholder="Condition"
-                  value={condition} 
-                  onChangeText={(condition) => setCondition(condition)}
-                  setValue = {setCondition}
-                  secureTextEntry = {false}
+
+            <TouchableOpacity onPress={() => setShowList(true)}>
+                    <Text>{condition}</Text>
+                 </TouchableOpacity>
+
+                <Modal visible={showList} animationType="slide" presentationStyle="center">
+
+                <FlatList
+                  data={options}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setCondition(item.value);
+                        setShowList(false);
+                      }}
+                      style={{
+                        position: "relative", 
+                        padding: 60,
+                        backgroundColor: item.value === condition ? 'lightgray' : 'white',
+                      }}
+                    >
+                  <Text>{item.label}</Text>
+            </TouchableOpacity>
+                  )}
+                  keyExtractor={(item) => item.value}
                 />
+              </Modal>
 
                 <Button onPress={() => navigation.navigate('PhotoScreen') }> Select Image </Button>
                 <Image
@@ -215,9 +251,9 @@ const NotificationScreen = ({navigation, route}) => {
     
 
     const styles = StyleSheet.create({
-      containter: {
+      root: {
         flex: 1,
-        backgroundColor: '#fffacd',
+        backgroundColor: '#708090',
         alignItems: 'center',
         justifyContent: 'center',
       },
@@ -231,7 +267,7 @@ const NotificationScreen = ({navigation, route}) => {
         backgroundColor: '#e6e6fa',
         width: '80%',
         borderColor: '#add8e6',
-        borderWidth: 2,
+        borderWidth: 4,
         borderRadius: 6,
         paddingHorizontal: 20,
         paddingVertical: 8,
@@ -257,4 +293,4 @@ const NotificationScreen = ({navigation, route}) => {
    
     });
 
-    export default NotificationScreen
+    export default SellScreen

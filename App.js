@@ -6,14 +6,12 @@ import SignUpScreen from './src/Screens/SignUpScreen/SignUpScreen';
 import ConfirmEmailScreen from './src/Screens/ConfirmEmailScreen/ConfirmEmailScreen';
 import ForgotPasswordScreen from './src/Screens/ForgotPasswordScreen/ForgotPasswordScreen';
 import ConfirmPasswordScreen from './src/Screens/ConfirmPasswordScreen/ConfirmPasswordScreen';
-import ApartmentScreen from './src/Screens/ApartmentScreen';
-import ArchiveScreen from './src/Screens/ArchiveScreen';
-import ContactScreen from './src/Screens/ContactScreen';
+import MyListingsScreen from './src/Screens/MyListingsScreen';
 import EventScreen from './src/Screens/EventScreen';
 import SupportScreen from './src/Screens/SupportScreen';
-import TableScreen from './src/Screens/TableScreen';
+import BrowseScreen from './src/Screens/BrowseScreen';
 import BookDetails from './src/Screens/BookDetailsScreen';
-import NotificationScreen from './src/Screens/NotificationScreen';
+import SellScreen from './src/Screens/SellScreen';
 import {initializeApp} from 'firebase/app'
 import firebase from 'firebase/compat';
 import { getFirestore } from "firebase/firestore";
@@ -29,6 +27,11 @@ import { AuthContext } from './context';
 import ImageScreen from './src/Screens/CameraScreen/Image';
 import PhotoScreen from './src/Screens/CameraScreen/Camera';
 import { Ionicons } from '@expo/vector-icons';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Warning: ...']); 
+LogBox.ignoreAllLogs();
+
 
 
 
@@ -46,19 +49,17 @@ const firebaseConfig = {
   databaseURL: "https://awesomeproject-2f66b-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
-const db = getFirestore()
+//const db = getFirestore()
 
 
 const AuthStack = createNativeStackNavigator ();
 const HomeStack = createNativeStackNavigator ();
 const NotifactionStack = createNativeStackNavigator ();
 const TableStack = createNativeStackNavigator ();
-const EventStack = createNativeStackNavigator ();
-const ArchiveStack = createNativeStackNavigator ();
+
 
 
 const Tabs = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
 
 
 const App = () => {
@@ -70,7 +71,6 @@ const App = () => {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
-
 
 
     //Inspiration fra øvelsesholdene
@@ -94,87 +94,75 @@ const App = () => {
 
   const HomeStackScreen = () => (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Home" component={HomeScreen}/>
-      <HomeStack.Screen name="ContactScreen" component={ContactScreen}/>
-      <HomeStack.Screen name="ApartmentScreen" component={ApartmentScreen}/>
-      <HomeStack.Screen name="SupportScreen" component={SupportScreen}/> 
-      <HomeStack.Screen name="EventScreen" component={EventScreen}/> 
-      <HomeStack.Screen name="ArchiveScreen" component={ArchiveScreen}/> 
-      <HomeStack.Screen name="TableScreen" component={TableScreen}/> 
-      <HomeStack.Screen name="SettingScreen" component={SettingScreen}/> 
+      <HomeStack.Screen 
+        name="HomeScreen" 
+        component={HomeScreen}
+        options={{ title: 'Home' }}
+      />  
+      <HomeStack.Screen 
+        name="SupportScreen" 
+        component={SupportScreen}
+        options={{ title: 'Support' }}
+      /> 
+      <HomeStack.Screen 
+        name="EventScreen" 
+        component={EventScreen}
+        options={{ title: 'Events' }}
+      /> 
+      <HomeStack.Screen 
+      name="MyListingsScreen" 
+      component={MyListingsScreen}
+      options={{ title: 'My Listings' }}
+      /> 
+      <HomeStack.Screen 
+        name="BrowseScreen" 
+        component={BrowseScreen}
+        options={{ title: 'Browse' }}
+      /> 
+      <HomeStack.Screen 
+      name="SettingScreen" 
+      component={SettingScreen}
+      options={{ title: 'Settings' }}
+      /> 
     </HomeStack.Navigator>
   )
 
-  const NotificationStackScreen = () => (
+  const SellStackScreen = () => (
     <NotifactionStack.Navigator>
-      <NotifactionStack.Screen name="Notifications" component={NotificationScreen}/>
-      <NotifactionStack.Screen name="PhotoScreen" component={PhotoScreen}/>
-      <NotifactionStack.Screen name="ImageScreen" component={ImageScreen}/>
+      <NotifactionStack.Screen 
+        name="SellScreen" 
+        component={SellScreen}
+        options={{ title: 'Sell' }}
+      />
+      <NotifactionStack.Screen 
+        name="PhotoScreen" 
+        component={PhotoScreen}
+        options={{ title: 'Photo' }}
+      />
+      <NotifactionStack.Screen 
+        name="ImageScreen" 
+        component={ImageScreen}
+        options={{ title: 'Image' }}
+      />
 
     </NotifactionStack.Navigator>
   )
 
-  const TableStackScreen = () => (
+  const BrowseStackScreen = () => (
     <TableStack.Navigator>
-      <TableStack.Screen name="Tables" component={TableScreen}/>
-      <TableStack.Screen name="BookDetails" component={BookDetails}/>
+      <TableStack.Screen 
+        name="BrowseScreen" 
+        component={BrowseScreen}
+        options={{ title: 'Browse' }}      
+      />
+      <TableStack.Screen 
+      name="BookDetails" 
+      component={BookDetails}
+      options={{ title: 'Details' }}
+      />
     </TableStack.Navigator>
   )
 
-  const EventStackScreen = () => (
-    <EventStack.Navigator>
-      <EventStack.Screen name="Events" component={EventScreen}/>
-    </EventStack.Navigator>
-  )
-
-  const ArchiveStackScreen = () => (
-    <ArchiveStack.Navigator>
-      <ArchiveStack.Screen name="Archives" component={ArchiveScreen}/>
-    </ArchiveStack.Navigator>
-  )
-
-  const TabsScreen = () => (
-    <Tabs.Navigator >
-        <Tabs.Screen 
-            name='HomeScreen' 
-            component={HomeStackScreen} 
-            options={{
-              tabBarIcon: ({ focused, color, size }) => (
-                <Ionicons name="ios-home" size={size} color={color} />
-              ),
-        }}/>
-        <Tabs.Screen 
-            name='NotificationScreen' 
-            component={NotificationStackScreen}
-            options={{
-              tabBarIcon: ({ focused, color, size }) => (
-                <Ionicons name="create" size={size} color={color} />
-              ),
-        }}/>
-
-        <Tabs.Screen 
-          name='TableScreen' 
-          component={TableStackScreen}
-          options={{
-            tabBarIcon: ({ focused, color, size }) => (
-              <Ionicons name="book" size={size} color={color} />
-            ),
-        }}/>
-
-        <Tabs.Screen
-          name='Noget' 
-          component={EventStackScreen}
-          options={{
-            tabBarIcon: ({ focused, color, size }) => (
-              <Ionicons name="create" size={size} color={color} />
-            ),
-        }} 
-          
-        />
-
-
-    </Tabs.Navigator>
-  )
 
   //https://www.youtube.com/watch?v=nQVCkqvU1uE anvendt til at styre navigationen med en splash screen når der loades og userToken til at afgøre om brugeren er logget ind eller ej. 
   //
@@ -215,13 +203,34 @@ const App = () => {
     <AuthContext.Provider value = {authContext}>
     <NavigationContainer>
       {userToken ? (
-         <Drawer.Navigator>
-         <Drawer.Screen name="Home" component={TabsScreen} />
-         <Drawer.Screen name = "Notifikationer" component={NotificationStackScreen} />
-         <Drawer.Screen name = "Opslagstavle" component={TableStackScreen} />
-         <Drawer.Screen name = "Begivenheder" component={EventStackScreen} />
-         <Drawer.Screen name = "Arkiver" component={ArchiveStackScreen} />
-       </Drawer.Navigator>
+           <Tabs.Navigator screenOptions={{headerShown: false}}>
+           <Tabs.Screen 
+               name='Home' 
+               component={HomeStackScreen} 
+               options={{
+                 tabBarIcon: ({ focused, color, size }) => (
+                   <Ionicons name="ios-home" size={size} color={color} />
+                 ),
+           }}/>
+           <Tabs.Screen 
+               name='Sell' 
+               component={SellStackScreen}
+               options={{
+                 tabBarIcon: ({ focused, color, size }) => (
+                   <Ionicons name="create" size={size} color={color} />
+                 ),
+           }}/>
+   
+           <Tabs.Screen 
+             name='Browse' 
+             component={BrowseStackScreen}
+             options={{
+               tabBarIcon: ({ focused, color, size }) => (
+                 <Ionicons name="book" size={size} color={color} />
+               ),
+           }}/>
+  
+       </Tabs.Navigator>
       ) : (
       <AuthStack.Navigator>
         <AuthStack.Screen name= "SignIn" component={LogInScreen} options={{title: 'Log In'}}/>

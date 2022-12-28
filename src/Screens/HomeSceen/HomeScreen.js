@@ -71,14 +71,8 @@ const HomeScreen = () => {
     const onTable = () => {
         navigation.navigate ('TableScreen')
     }
-    const onArchive = () => {
-        navigation.navigate ('ArchiveScreen')
-    }
-    const onContacts = () => {
-        navigation.navigate ('ContactScreen')
-    }
-    const onApartments = () => {
-        navigation.navigate ('ApartmentScreen')
+    const onMyListings = () => {
+        navigation.navigate ('MyListingsScreen')
     }
     const onSupport = () => {
         navigation.navigate ('SupportScreen')
@@ -109,16 +103,13 @@ const HomeScreen = () => {
 
         <SafeAreaView style = {styles.root}>
 
-
-
-            <Text style={styles.Text}> Hi {userData.fullname}</Text>
-
+        <Text style={styles.Text}> Hi {userData.fullname}</Text>
 
         <TouchableOpacity
         style={styles.button} 
         title = "My Listings"
         text= 'My Listings'
-        onPress={onArchive}        
+        onPress={onMyListings}        
         ><Text style = {styles.Text2}> My Listings </Text>
          </TouchableOpacity>
 
@@ -128,22 +119,6 @@ const HomeScreen = () => {
         text= 'Profile Settings'
         onPress={onSettingScreen}
         ><Text style = {styles.Text2}> Profile Settings </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-        style={styles.button}    
-        title = "Ledig skærm"   
-        text= 'Ledig Skærm til en feature (Hedder ContractScreen i fil-mappe)'
-        onPress={onContacts}
-        ><Text style = {styles.Text2}> Ledig Skærm (ContactScreen) </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-        style={styles.button}    
-        title = "Lejligheder & beboere"   
-        text= 'Lejligheder & Beboere'
-        onPress={onApartments}
-        ><Text style = {styles.Text2}> Ledig skærm (ApartmentScreen) </Text>
         </TouchableOpacity>
 
         <TouchableOpacity 

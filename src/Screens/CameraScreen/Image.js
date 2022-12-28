@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Dimensions, Image, StyleSheet, View, Text, Button, TouchableOpacity} from "react-native";
 import PhotoScreen from "./Camera";
-import NotificationScreen from "../NotificationScreen";
+import SellScreen from "../SellScreen";
 
 const ImageScreen = ({route, navigation}) => {
 
@@ -31,7 +31,7 @@ const ImageScreen = ({route, navigation}) => {
                   }}  
                 />
                 <Button                       
-                onPress={() => navigation.navigate('Notifications', {image})}
+                onPress={() => navigation.navigate('SellScreen', {image})}
                 title="Go back to listing" 
                 Text="Go back to listing">
                 </Button>

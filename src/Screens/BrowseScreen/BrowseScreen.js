@@ -12,7 +12,7 @@ import SearchFilter, {createFilter} from 'react-native-search-filter';
 
 
 
-const TableScreen = ({navigation, route}) => {
+const BrowseScreen = ({navigation, route}) => {
 
   const firestore = firebase.firestore;
   const db = firebase.firestore();
@@ -70,10 +70,8 @@ const TableScreen = ({navigation, route}) => {
 
 
         return (
-              <View style = {styles.container}>
-                <View>
-                <Text style = {styles.title}>Browse books</Text>
-
+        <View style = {styles.root}>
+            <View>
               <View>
                 <TextInput
                   style={styles.searchBar}
@@ -115,17 +113,10 @@ const TableScreen = ({navigation, route}) => {
         )
     }
     
-export default TableScreen
-
-
-
-
-
-
 
 const styles = StyleSheet.create({
-  container:{
-    backgroundColor: '#fffacd',
+  root:{
+    backgroundColor: '#708090',
   },
   title:{
         color: "#add8e6",
@@ -186,3 +177,5 @@ const styles = StyleSheet.create({
 
 
 });
+
+export default BrowseScreen

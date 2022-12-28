@@ -5,8 +5,7 @@ import firebase from 'firebase/compat';
 import { FlatList } from 'react-native-gesture-handler';
 import { v4 as uuidv4 } from 'uuid';
 import 'firebase/firestore';
-import TableScreen from '../TableScreen';
-import ArchiveScreen from '../ArchiveScreen';
+import BrowseScreen from '../BrowseScreen';
 
 const BookDetailsScreen = ({ route, navigation }) => {
   const { books } = route.params;

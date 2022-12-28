@@ -4,7 +4,7 @@ import {Button, Image, Linking, Platform, ScrollView, StyleSheet, Text, Touchabl
 import * as ImagePicker from "expo-image-picker";
 import {StatusBar} from "expo-status-bar";
 //import * as MediaLibrary from "expo-mediaç-library";
-import NotificationScreen from "../NotificationScreen";
+import SellScreen from "../SellScreen";
 
 
 const PhotoScreen = ({navigation, route}) => {

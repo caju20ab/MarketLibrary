@@ -8,7 +8,7 @@ import 'firebase/firestore';
 
 
 
-const ArchiveScreen = () => {
+const MyListingsScreen = () => {
 
 
   const firestore = firebase.firestore;
@@ -86,7 +86,6 @@ const ArchiveScreen = () => {
         return (
             <View>
 
-                <Text>Archives</Text>
 
                 <FlatList
                     numColumns={2}
@@ -126,4 +125,4 @@ const ArchiveScreen = () => {
 
     })
     
-    export default ArchiveScreen
+    export default MyListingsScreen
