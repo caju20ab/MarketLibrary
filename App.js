@@ -28,6 +28,8 @@ import { set } from 'react-native-reanimated';
 import { AuthContext } from './context';
 import ImageScreen from './src/Screens/CameraScreen/Image';
 import PhotoScreen from './src/Screens/CameraScreen/Camera';
+import { Ionicons } from '@expo/vector-icons';
+
 
 
 //Add SDKs for the i want to use 
@@ -133,10 +135,44 @@ const App = () => {
 
   const TabsScreen = () => (
     <Tabs.Navigator >
-        <Tabs.Screen name='HomeScreen' component={HomeStackScreen}/>
-        <Tabs.Screen name='NotificationScreen' component={NotificationStackScreen}/>
-        <Tabs.Screen name='TableScreen' component={TableStackScreen}/>
-        <Tabs.Screen name='Noget' component={EventStackScreen} />
+        <Tabs.Screen 
+            name='HomeScreen' 
+            component={HomeStackScreen} 
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <Ionicons name="ios-home" size={size} color={color} />
+              ),
+        }}/>
+        <Tabs.Screen 
+            name='NotificationScreen' 
+            component={NotificationStackScreen}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <Ionicons name="create" size={size} color={color} />
+              ),
+        }}/>
+
+        <Tabs.Screen 
+          name='TableScreen' 
+          component={TableStackScreen}
+          options={{
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons name="book" size={size} color={color} />
+            ),
+        }}/>
+
+        <Tabs.Screen
+          name='Noget' 
+          component={EventStackScreen}
+          options={{
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons name="create" size={size} color={color} />
+            ),
+        }} 
+          
+        />
+
+
     </Tabs.Navigator>
   )
 

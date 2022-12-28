@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TouchableOpacity,} from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from "firebase/compat";
 import { FlatList } from 'react-native-gesture-handler';
 import { v4 as uuidv4 } from 'uuid';
 import 'firebase/firestore';
+import { TextInput } from 'react-native-paper';
+import SearchFilter, {createFilter} from 'react-native-search-filter';
+
 
 
 
@@ -16,11 +19,7 @@ const TableScreen = ({navigation, route}) => {
 
   const [user, setUser] = useState({ loggedIn: false });
   const [books, setBooks] = useState([])
-
-
-    //Navigation
-
-
+  const [searchTerm, setSearchTerm] = useState('');
 
     //Definere navigation til at bruge min StackNavigator
     
@@ -42,6 +41,7 @@ const TableScreen = ({navigation, route}) => {
           }, []);
 
 
+          //Henter og holder øje med de opdatering der sker i books collection som er i databasen
           useEffect(() => {
             const listOfBooks = firebase.firestore()
               .collection('books')
@@ -57,15 +57,35 @@ const TableScreen = ({navigation, route}) => {
           }, []);
 
 
-      
+
+          //Anvender den importerede Search-Filter pakke. Hvis at der bruges et SearchFilter skal filteredBooks kun indeholde disse resultater
+          //ellers skal filteredBooks bare indeholde alle bøgerne som er oprettet. 
+          const filteredBooks = searchTerm ? books.filter(createFilter(searchTerm, ['Title', 'Author', 'Courses'])) : books;
+
+
+          //Ændre staten af SearchTerm når brugeren ændrer i inputfeltet
+          const searchUpdated = (term) => {
+            setSearchTerm(term)
+          }
+
 
         return (
               <View style = {styles.container}>
                 <View>
                 <Text style = {styles.title}>Browse books</Text>
+
+              <View>
+                <TextInput
+                  style={styles.searchBar}
+                  onChangeText={searchUpdated} 
+                  value={searchTerm}
+                  placeholder="Search for a title, author or course"
+                />
+              </View>
+
                 <FlatList
                     numColumns={2}
-                    data={books}
+                    data={filteredBooks}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
 
@@ -106,9 +126,6 @@ export default TableScreen
 const styles = StyleSheet.create({
   container:{
     backgroundColor: '#fffacd',
-
-
-
   },
   title:{
         color: "#add8e6",
@@ -145,7 +162,19 @@ const styles = StyleSheet.create({
     color: 'grey',
     marginBottom: 20,
   },
- 
+  container: {
+    backgroundColor: '#fffacd',
+  },
+  searchContainer: {
+    padding: 10,
+  },
+  searchBar: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 10,
+    padding: 10,
+  },
 
 
 
