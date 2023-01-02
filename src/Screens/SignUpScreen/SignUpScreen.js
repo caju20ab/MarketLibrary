@@ -106,7 +106,7 @@ const SignUpScreen = () => {
 
         
         <Text style={styles.text}>
-            By registering .... Read more on i own you <Text style={styles.link} onPress={onPoliciesPressed}>Policies</Text> </Text>
+            When registering you are agreeing to these  <Text style={styles.link} onPress={onPoliciesPressed}>Policies</Text> </Text>
 
 
         <SocialSignInButtons/>

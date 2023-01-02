@@ -8,10 +8,14 @@ import { useNavigation } from '@react-navigation/native';
 import firebase from "firebase/compat";
 import { AuthContext } from '../../../context';
 import { Button, TextInput } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
+
+
 
 
 
 const LogInScreen = () => {
+    //opretter de forskellige states
     const [email, setEmail] = useState ('');
     const [password, setPassword] = useState ('');
     const [isCompleted, setCompleted] = useState(false)
@@ -37,7 +41,7 @@ const LogInScreen = () => {
         }
     }
 
-
+//Navigations funktioner som fungerer som logikken bag knapperne på frontend
     const onForgotPassword = () => {
         navigation.navigate ('ForgotPassword')
     }
@@ -54,19 +58,26 @@ const LogInScreen = () => {
              resizeMode = "contain" 
             />
 
-        <TextInput style = {styles.inputFields} placeholder='Email' 
-        value={email} 
-        setValue = {setEmail}
-        onChangeText = {setEmail}
-        />
+        <View style = {styles.containers}>
+            <Ionicons name="person-circle" size={25} color="#87ceeb" style={styles.icon}/>
+            <TextInput style = {styles.inputFields} placeholder='Email' 
+            value={email} 
+            setValue = {setEmail}
+            onChangeText = {setEmail}
+            />
+        </View>
 
-        <TextInput style = {styles.inputFields}
-        placeholder='Password' 
-        value={password} 
-        setValue = {setPassword}
-        onChangeText = {setPassword}
-        secureTextEntry = {true}
-        />
+        <View style = {styles.containers}>
+            <Ionicons name="key" size={25} color="#87ceeb" style={styles.icon}/>
+            <TextInput style = {styles.inputFields}
+            placeholder='Password' 
+            value={password} 
+            setValue = {setPassword}
+            onChangeText = {setPassword}
+            secureTextEntry = {true}
+            />
+        </View>
+
 
         <Button 
         style={styles.loginButton} 
@@ -98,7 +109,8 @@ const styles = StyleSheet.create({
     root: {
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#778899'
+        backgroundColor: '#778899',
+        height: 800,
         
     },
     logo: {
@@ -107,17 +119,30 @@ const styles = StyleSheet.create({
         maxHeight: 200,
         shadowColor: '#ffffff'
     },
+    containers: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#e6e6fa',
+        borderWidth: .5,
+        borderColor: "#add8e6",
+        height: 50,
+        borderRadius: 5,
+        margin: 7,
+    },
+    icon: {
+        padding: 10,
+        margin: 5,
+    },
     inputFields: {
-        backgroundColor: '#fffafa',
-        width: 250,
-        height: 25,
-        borderColor: '#ffffff',
-        borderWidth: 6,
-        borderRadius: 6,
-        paddingHorizontal: 10,
-        paddingVertical: 2,
-        marginVertical: 15,
-      },
+        width: '80%',
+        height: 50.5,
+        paddingHorizontal: 30,
+        paddingVertical: 0,
+        marginVertical: 10,
+        flex: 1,
+        backgroundColor: "#e6e6fa",
+    },
     loginButton: {
         backgroundColor: '#ffffff',
         width: '100%',

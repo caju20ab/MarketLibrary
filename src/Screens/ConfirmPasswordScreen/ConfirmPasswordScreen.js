@@ -6,11 +6,16 @@ import CustomButton from '../../Components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 
 const ConfirmPasswordScreen = () => {
+
+    //Opstiller kode staten  
     const [code, setCode] = useState ('');
     const [newPassword, setNewPassword] = useState ('');
 
+    //Opretter en variabel til navigation
     const navigation = useNavigation ()
-    
+
+
+    //Oprettes navigations logik til knapperne i frontend. Laves alle tre som funktioner.
     const onSignInPressed = () => {
         navigation.navigate ('SignIn')
         console.warn ('Going Back');

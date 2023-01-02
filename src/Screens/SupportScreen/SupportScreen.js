@@ -4,6 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import firebase from "firebase/compat";
 
 
+
+//Denne skærm er ikke fuld funktionel og er kun med for det visuelle.
+
 const SupportScreen = () => {
 
     const [user, setUser] = useState({ loggedIn: false });

@@ -3,10 +3,11 @@ import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView } from 'react-n
 import { useNavigation } from '@react-navigation/native';
 import firebase from "firebase/compat";
 
-
+//Denne skærm anvendes ikke, men blev beholdt for ikke at ødelægge navigationen i App.js
 
 const EventScreen = () => {
 
+  //Sætter mine useState for user log in
   const [user, setUser] = useState({ loggedIn: false });
 
 

@@ -6,6 +6,8 @@ import CustomInput from '../../Components/CustomInput';
 import CustomButton from '../../Components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 
+//Siden her er ikke fuld funktionel, men er lavet for det visuelle
+
 const ForgotPasswordScreen = () => {
     const [username, setUsername] = useState ('');
 

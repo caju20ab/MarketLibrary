@@ -9,11 +9,19 @@ import { collection, addDoc, getDocs, getFirestore } from "firebase/firestore";
 import * as ImagePicker from 'react-native-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import DatePicker from 'react-native-datepicker';
+import { Ionicons } from '@expo/vector-icons';
+import { color } from 'react-native-reanimated';
+
+
 
 
 
 const SellScreen = ({navigation, route}) => {
+
+//Opretter database variabel, som kaldes længere ned i kode
   const db = getFirestore()
+
+  //Opretter de forskellige useStates til LogIn og Inputfelter 
   const [user, setUser] = useState({ loggedIn: false });
   const [books, setBooks] = useState ([])
   const [userBooks, setUserBooks] = useState([]);
@@ -24,12 +32,10 @@ const SellScreen = ({navigation, route}) => {
   const [course, setCourse] = useState ('');
   const [releaseDate, setReleaseDate] = useState ('');
   const [isbnNumber, setIsbnNumber] = useState ('');
-  const [condition, setCondition] = useState ('new');
+  const [condition, setCondition] = useState ('New');
   const [image, setImage] = useState (null)
   const [showList, setShowList] = useState('');
 
-
-  //Definere navigation til at bruge min StackNavigator
     
         function onAuthStateChange(callback) {
             return firebase.auth().onAuthStateChanged(user => {
@@ -53,17 +59,19 @@ const SellScreen = ({navigation, route}) => {
             return <View><Text>Not found</Text></View>;
         }
 
-
+ //useEffect hook som køre hver gang skærmen render. Hvis der er blevet valgt et billede, skal dette være Image nuværende state
         useEffect(() => {
           if (route.params && route.params.image) {
             setImage(route.params.image);
           }
         }, [route.params]);
 
+//Bruges til at lave en funktion til en knap, således brugeren kan vælge et nyt billede hvis det ønskes
         const resetImage = () => {
           setImage('')
         }
 
+//Funktion der nulstiller states til alle inputfelter. Køres når en annonce er oprettet.
         const resetInputFields = () => {
           setTitle("");
           setAuthor("");
@@ -71,20 +79,20 @@ const SellScreen = ({navigation, route}) => {
           setCourse("");
           setReleaseDate("");
           setIsbnNumber("");
-          setCondition("new");
+          setCondition("New");
           setImage(null);
         };
 
-        //DatePicker options
+//Condition options opstilles
         const options = [
-          { label: 'New', value: 'new' },
-          { label: 'Like new', value: 'like new' },
-          { label: 'Very good', value: 'very good' },
-          { label: 'Good', value: 'good' },
-          { label: 'Acceptable', value: 'acceptable' },
+          { label: 'New', value: 'New' },
+          { label: 'Like new', value: 'Like new' },
+          { label: 'Very good', value: 'Very good' },
+          { label: 'Good', value: 'Good' },
+          { label: 'Acceptable', value: 'Acceptable' },
         ];
 
-        
+//Funktionen til at oprette en annonce i firestore databasen
           const createListing = async () => {
             if (title === "" || author === "" || edition === "" || course === "" || releaseDate === "" || isbnNumber === "" || condition === "" || image === "") {
               alert("All fields are required!");
@@ -134,46 +142,69 @@ const SellScreen = ({navigation, route}) => {
               <ScrollView>
               <View style = {styles.root}>
                 <Text style = {styles.title}>Create a listing</Text>
+
+                <View style = {styles.containers}>
+                <Ionicons name="text-outline" size={20} color="grey" style={styles.icon}/>
                 <TextInput style = {styles.inputFields}
-                  placeholder="Title"
+                  placeholder="Title: e.g. 'The Lean Startup'"
                   value={title} 
                   onChangeText={(title) => setTitle(title)}
                   setValue = {setTitle}
                   secureTextEntry = {false}
                 />
+                </View>
+
+                <View style = {styles.containers}>
+                <Ionicons name="ios-person" size={20} color="grey" style={styles.icon}/>
                 <TextInput style = {styles.inputFields}
-                  placeholder="Author"
+                  placeholder="Author: e.g. 'Eric Reis'"
                   value={author} 
                   onChangeText={(author) => setAuthor(author)}
                   setValue = {setAuthor}
                   secureTextEntry = {false}
                 />
+                </View>
+
+                <View style = {styles.containers}>
+                <Ionicons name="cash-outline" size={20} color="grey" style={styles.icon}/>
                 <TextInput style = {styles.inputFields}
-                  placeholder="Price"
+                  placeholder="Price: DKK"
                   value={price} 
                   onChangeText={(price) => setPrice(price)}
                   setValue = {setPrice}
                   secureTextEntry = {false}
                 />
+                </View>
+
+
+                <View style = {styles.containers}>
+                <Ionicons name="library" size={20} color="grey" style={styles.icon}/>
                 <TextInput style = {styles.inputFields}
-                  placeholder="Edition"
+                  placeholder="Edition: e.g. '4th'"
                   value={edition} 
                   onChangeText={(edition) => setEdition(edition)}
                   setValue = {setEdition}
                   secureTextEntry = {false}
                 />
+                </View>
+
+                <View style = {styles.containers}>
+                <Ionicons name="school" size={20} color="grey" style={styles.icon}/>
                 <TextInput style = {styles.inputFields}
-                  placeholder="Course"
+                  placeholder="Course: e.g. 'Innovation og ny teknologi'"
                   value={course} 
                   onChangeText={(course) => setCourse(course)}
                   setValue = {setCourse}
                   secureTextEntry = {false}
                 />
+                </View>
+
+                <View style = {styles.containers}>
                 <DatePicker
-                  style={{width: 200}}
+                  style={{width: "100%"}}
                   date={releaseDate}  // This is the state variable for the release date
                   mode="date"
-                  placeholder="Select release date"
+                  placeholder="Click and select release date"
                   format="YYYY-MM-DD"
                   confirmBtnText="Confirm"
                   cancelBtnText="Cancel"
@@ -182,15 +213,23 @@ const SellScreen = ({navigation, route}) => {
                       position: 'absolute',
                       left: 0,
                       top: 4,
-                      marginLeft: 0
+                      marginLeft: 10,
+                      color: "grey"
                     },
                     dateInput: {
-                      marginLeft: 36
+                      marginLeft: 20,
+                      marginRight: 30,
+                      borderWidth: 0,
+                      color: "grey"
                     }
                   }}
                   onDateChange={(date) => {setReleaseDate(date)}}  // This function is called when the user selects a date
 
                 />
+                </View>
+
+                <View style = {styles.containers}>
+                <Ionicons name="key" size={20} color="grey" style={styles.icon}/>
                  <TextInput style = {styles.inputFields}
                   placeholder="ISBN number"
                   value={isbnNumber} 
@@ -198,56 +237,77 @@ const SellScreen = ({navigation, route}) => {
                   setValue = {setIsbnNumber}
                   secureTextEntry = {false}
                 />
+                </View>
 
-            <TouchableOpacity onPress={() => setShowList(true)}>
-                    <Text>{condition}</Text>
+                <View style = {styles.containers}>
+                <Ionicons name="ice-cream" size={20} color="grey" style={styles.icon}/>
+                <TouchableOpacity 
+                onPress={() => setShowList(true)}
+                style ={{
+                  width: 310,
+                  height: 30,
+                  paddingHorizontal: 30,
+                  paddingVertical: 0,
+                  marginVertical: 10,
+                  flex: 1,
+                }}
+                >
+                <Text style = {{color:"grey"}}>Selected condition: <Text style = {{color:"blue", fontSize:"15"}}>{condition}</Text> </Text>
                  </TouchableOpacity>
 
                 <Modal visible={showList} animationType="slide" presentationStyle="center">
-
-                <FlatList
-                  data={options}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setCondition(item.value);
-                        setShowList(false);
-                      }}
-                      style={{
-                        position: "relative", 
-                        padding: 60,
-                        backgroundColor: item.value === condition ? 'lightgray' : 'white',
-                      }}
-                    >
-                  <Text>{item.label}</Text>
-            </TouchableOpacity>
+                      <FlatList
+                        data={options}
+                        renderItem={({ item }) => (
+                          <TouchableOpacity
+                            onPress={() => {
+                              setCondition(item.value);
+                              setShowList(false);
+                            }}
+                            style={{
+                              position: "relative", 
+                              padding: 60,
+                              backgroundColor: item.value === condition ? 'lightgray' : 'white',
+                            }}>
+                                <Text>{item.label}</Text>
+                           </TouchableOpacity>
                   )}
                   keyExtractor={(item) => item.value}
-                />
-              </Modal>
+                   />
+                </Modal>
+                </View>
+
+
+            <View style = {styles.containers}>
 
                 <Button onPress={() => navigation.navigate('PhotoScreen') }> Select Image </Button>
                 <Image
                                source={{ uri: image }}
                                style={{
-                                 width: 100,
+                                 width: 85,
                                  height: 50,
-                                 borderRadius: 10,
-                                 marginTop: 10,
+                                 borderRadius: 3,
+                                 borderWidth: 2,
+                                 borderColor: "white",
+                                 marginTop: 0,
                                }}
                 />
+            </View>
 
 
+            <View style = {styles.containers}>
                 <Button onPress={resetImage} style = {styles.CreateButton} title="Reset Image" Text="Reset Image">Reset Image</Button>
                 <Button onPress={createListing} style = {styles.CreateButton} title="Create" Text="Create">Create Listing</Button>
-              </View>
+            </View>
 
-              </ScrollView>
-            </SafeAreaView>
+          </View>
+
+        </ScrollView>
+      </SafeAreaView>
     
-        )
+    )
     
-    }
+   }
     
 
     const styles = StyleSheet.create({
@@ -256,6 +316,7 @@ const SellScreen = ({navigation, route}) => {
         backgroundColor: '#708090',
         alignItems: 'center',
         justifyContent: 'center',
+        height: 800,
       },
       title: {
         color: "#add8e6",
@@ -263,30 +324,46 @@ const SellScreen = ({navigation, route}) => {
         textAlign: 'center',
         fontWeight: 'bold',
       },
-      inputFields: {
+      containers: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#e6e6fa',
-        width: '80%',
-        borderColor: '#add8e6',
-        borderWidth: 4,
-        borderRadius: 6,
-        paddingHorizontal: 20,
-        paddingVertical: 8,
-        marginVertical: 10,
+        borderWidth: .5,
+        borderColor: "#add8e6",
+        height: 50,
+        borderRadius: 5,
+        margin: 7
       },
-
+      icon: {
+        padding: 10,
+        margin: 5,
+      },
+      inputFields: {
+        width: '80%',
+        height: 30,
+        paddingHorizontal: 30,
+        paddingVertical: 0,
+        marginVertical: 10,
+        flex: 1,
+        backgroundColor: "#e6e6fa"
+      },
       CreateButton: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 2,
-        paddingHorizontal: 50,
-        borderRadius: 2,
-        elevation: 3,
-        backgroundColor: '#add8e6',
-        margin: 5,        
+        paddingVertical: 0,
+        paddingHorizontal: 10,
+        borderRadius: 5,
+        elevation: 0,
+        margin: 5,     
+        borderWidth: 2,
+        borderColor: "grey"   
+
       },
       Text: {
         backgroundColor: 'Black',
       },
+    
     
       
   

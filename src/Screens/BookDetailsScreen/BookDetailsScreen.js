@@ -7,6 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 import 'firebase/firestore';
 import BrowseScreen from '../BrowseScreen';
 
+//Denne side bliver man navigeret til når man har trykket på en specifik bog i BrowseScreen. Dataen fra BrowseScreen bliver videregivet
+//til denne skærm, såleds man kan display den bog der blev trykket på.
+
 const BookDetailsScreen = ({ route, navigation }) => {
   const { books } = route.params;
 
@@ -36,23 +39,23 @@ const BookDetailsScreen = ({ route, navigation }) => {
         </View>
 
         <View style={styles.detailsContainer}>
-          <Text style={styles.label}>Condition:</Text>
+          <Text style={styles.label}>Condition: </Text>
           <Text style={styles.value}>{books.Condition}</Text>
         </View>
         <View style={styles.detailsContainer}>
-          <Text style={styles.label}>Course:</Text>
+          <Text style={styles.label}>Course: </Text>
           <Text style={styles.value}>{books.Course}</Text>
         </View>
         <View style={styles.detailsContainer}>
-          <Text style={styles.label}>Edition:</Text>
+          <Text style={styles.label}>Edition: </Text>
           <Text style={styles.value}>{books.Edition}</Text>
         </View>
         <View style={styles.detailsContainer}>
-          <Text style={styles.label}>ISBN:</Text>
+          <Text style={styles.label}>ISBN: </Text>
           <Text style={styles.value}>{books.isbnNumber}</Text>
         </View>
         <View style={styles.detailsContainer}>
-          <Text style={styles.label}>Release Date:</Text>
+          <Text style={styles.label}>Release Date: </Text>
           <Text style={styles.value}>{books.releaseDate}</Text>
         </View>
       </View>
@@ -65,7 +68,8 @@ const styles = StyleSheet.create({
           flex: 1,
           alignItems: 'center',
           padding: 20,
-          backgroundColor: '#708090'
+          backgroundColor: '#708090', 
+          Height: 180
         },
 
         title: {
@@ -102,7 +106,7 @@ const styles = StyleSheet.create({
 
         button: {
         backgroundColor: '#ffffff',
-        width: 120,
+        width: 200,
         padding: 20,
         marginVertical: 10,
         alignItems: 'center',
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
         },
 
         value: {
-        color: 'grey',
+        color: 'black',
         },
         });
   

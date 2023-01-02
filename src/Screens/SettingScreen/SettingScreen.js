@@ -5,10 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import firebase from "firebase/compat";
 import {getFirestore} from "firebase/firestore"; 
 
-
+//Denne skærm er ikke fuld funktionel og er kun med for det visuelle.
 
 
 const SettingScreen = () => {
+
 
     const [user, setUser] = useState({ loggedIn: false });
 
@@ -36,54 +37,8 @@ const SettingScreen = () => {
         return (
             <SafeAreaView style = {styles.root}>
     
-            <Text style={styles.Menu}>Min profil</Text>
-
-            <Text style={styles.Menu}>Personlige oplysninger</Text>
-
+            <Text style={styles.Menu}>My profile</Text>
     
-    
-    
-    
-    
-            <Text style={styles.Ejendommen}>Ejendommen</Text>
-    
-    
-            <CustomButton  
-            text= 'Opslagstavle'
-    
-            />
-    
-            <CustomButton
-            text= 'Arkiv'
-    
-            
-            />
-            <CustomButton
-            text= 'Begivenheder'
-    
-            
-            />
-            <CustomButton
-            text= 'Kontakter'
-    
-            
-            />
-            <CustomButton
-            text= 'Lejligheder & Beboere'
-    
-            
-            />
-            <CustomButton
-            text= 'Support'
-    
-            
-            />
-            <CustomButton onPress={() => handleLogOut()} text= "Log ud" />
-    
-    
-    
-    
-        
             </SafeAreaView>
     
         )

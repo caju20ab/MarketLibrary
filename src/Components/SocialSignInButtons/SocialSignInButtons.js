@@ -2,36 +2,20 @@ import React from "react";
 import {view, text} from 'react-native'
 import CustomButton from "../CustomButton";
 
+//Her laves der et custom compenent i form af en universel knap til at logge ind med CBS konti, hvis et partnerskab med dem blev aktuelt en dag.
 
 const SocialSignInButtons = () => {
-    const onSignInFacebook = () => {
-        console.warn ('Facebook');
+    const onSignInCBS = () => {
+        console.warn ('CBS');
     }
-    const onSignInGoogle = () => {
-        console.warn ('Google');
-    }
-    const onSignInApple = () => {
-        console.warn ('Apple');
-    }
+
     return (
         <>
         <CustomButton 
-        text='Sign In With Facebook' 
-        onPress={onSignInFacebook} 
+        text='Sign In With CBS credentials' 
+        onPress={onSignInCBS} 
         bgColor = "#E7EAF4"
         fgColor= "#4765A9"
-        />
-         <CustomButton 
-        text='Sign In With Google' 
-        onPress={onSignInGoogle} 
-        bgColor = "#FAE9EA"
-        fgColor= "#DD4D44"
-        />
-         <CustomButton 
-        text='Sign In With Apple' 
-        onPress={onSignInApple} 
-        bgColor="#E3E3E3"
-        fgColor="#363636"
         />
         </>
     )

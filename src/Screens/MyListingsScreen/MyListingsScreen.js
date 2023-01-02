@@ -87,30 +87,28 @@ const MyListingsScreen = () => {
             <View>
 
 
-                <FlatList
-                    numColumns={2}
-                    data={userBooks}
-                    keyExtractor={(item, index) => index.toString()} // Use the id field as the unique key for each item
-                    renderItem={({ item }) => (
-
-                     <TouchableOpacity
-                      style={{ flex: 1, margin: 10 }}
+            <FlatList
+                  numColumns={2}
+                  data={userBooks}
+                  keyExtractor={(item) => item.id}
+                  renderItem={({ item }) => (
+                  <TouchableOpacity
+                      style={styles.TouchableOpacity}
                       onPress={() => navigation.navigate('BookDetails', { books: item })}
-                    >
-                       <View style={{ flex: 1, backgroundColor: '#eee', borderRadius: 10 }}>
-                          <Text style={styles.UsersDisplayText}>
-                            {item.Title} <Text> made by </Text>{item.Author}
-                           </Text>
-                        </View>
-                    </TouchableOpacity>
-  )}
-/>
-    
-          
+                  >
+                    <View style={styles.bookContainer}>
+                      <Image
+                          source={{ uri: item.Image }}
+                          style={styles.bookCover}
+                      />
+                      <Text style={styles.bookTitle}>{item.Title}</Text>
+                      <Text style={styles.bookPrice}>{item.Price}</Text>
+                    </View>
+                  </TouchableOpacity>
+               )}
+            /> 
             </View>
-    
         )
-    
     }
     
     const styles = StyleSheet.create({
@@ -120,6 +118,33 @@ const MyListingsScreen = () => {
         marginVertical: 8,
         fontSize: 16,
         fontStyle: "black"
+      },
+      TouchableOpacity: {
+        flex: 1,
+        margin: 10,
+      },
+      bookContainer: {
+        flex: 1,
+        backgroundColor: '#eee',
+        borderRadius: 3,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },  
+      bookCover: {
+        width: 167,
+        height: 150,
+        borderRadius: 2,
+      },
+      bookTitle: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        marginTop: 10,
+        textAlign: 'center',
+      },
+      bookPrice: {
+        fontSize: 13,
+        marginTop: 10,
+        textAlign: 'center',
       },
 
 

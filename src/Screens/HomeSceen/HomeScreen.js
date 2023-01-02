@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthContext } from '../../../context';
 import CustomButton from '../../Components/CustomButton';
 import { collection, addDoc, getDocs, getFirestore, doc, find } from "firebase/firestore"; 
+import { Ionicons } from '@expo/vector-icons';
 
 
 
@@ -105,37 +106,60 @@ const HomeScreen = () => {
 
         <Text style={styles.Text}> Hi {userData.fullname}</Text>
 
-        <TouchableOpacity
-        style={styles.button} 
+      <TouchableOpacity
         title = "My Listings"
         text= 'My Listings'
         onPress={onMyListings}        
-        ><Text style = {styles.Text2}> My Listings </Text>
-         </TouchableOpacity>
+        >
+        <View style ={styles.containers}>
+        <Ionicons name="search" size={20} color="#87ceeb" style={styles.icon}/>
+        <View>
+          <Text style = {styles.Text2}> My listings </Text>
+       </View>
+       </View>
+      </TouchableOpacity>
 
-        <TouchableOpacity 
-        style={styles.button}    
+      <TouchableOpacity 
         title = "Profile Settings"   
         text= 'Profile Settings'
         onPress={onSettingScreen}
-        ><Text style = {styles.Text2}> Profile Settings </Text>
-        </TouchableOpacity>
+        >
+       <View style ={styles.containers}>
+       <Ionicons name="settings" size={20} color="#87ceeb" style={styles.icon}/>
+       <View>
+        <Text style = {styles.Text2}> Settings </Text>
+       </View>
+       </View>
+      </TouchableOpacity>
 
-        <TouchableOpacity 
-        style={styles.button}    
+
+      <TouchableOpacity 
         title = "Support"   
         text= 'Support'
         onPress={onSupport}
-        ><Text style = {styles.Text2}> Support </Text>
-        </TouchableOpacity>
+        >
+        <View style ={styles.containers}>
+        <Ionicons name="help-circle" size={20} color="#87ceeb" style={styles.icon}/>
+        <View>
+          <Text style = {styles.Text2}> Support </Text>
+        </View>
+      </View>
+      </TouchableOpacity>
 
-        <TouchableOpacity 
-        style={styles.button}    
+
+      <TouchableOpacity 
         title = "Log out"    
         onPress={() => handleLogOut()} 
         text= "Log ud" 
-        ><Text style = {styles.Text2}> Log out </Text>
-        </TouchableOpacity>
+        >
+        <View style ={styles.containers}>
+          <Ionicons name="log-out" size={20} color="#87ceeb" style={styles.icon}/>
+          <View>
+            <Text style = {styles.Text2}> Log out </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+
 
 
         </SafeAreaView>
@@ -147,33 +171,38 @@ const HomeScreen = () => {
 
 
 const styles = StyleSheet.create({
+  
     root: {
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#708090'
-        
+        backgroundColor: '#708090',
+        justifyContent: "space-between",
+        height: 550
+
     },
-    inputFields: {
-        backgroundColor: '#fffafa',
-        width: 250,
-        height: 25,
-        borderColor: '#ffffff',
-        borderWidth: 6,
-        borderRadius: 6,
-        paddingHorizontal: 10,
-        paddingVertical: 2,
-        marginVertical: 15,
-      },
+    icon: {
+      padding: 10,
+      margin: 5,
+    },
+    containers: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#e6e6fa',
+      borderWidth: .5,
+      borderColor: "#add8e6",
+      height: 50,
+      borderRadius: 5,
+      margin: 10,
+      width: 300
+    },
     button: {
-        backgroundColor: '#ffffff',
-        width: '80%',
+        backgroundColor: '#e6e6fa',
+        width: '50%',
         padding: 20,
-        marginVertical: 10,
+        marginVertical: 20,
         alignItems: "center",
         borderRadius: 10,
-        borderWidth: 5,
-        borderColor: "#87ceeb",
-        text: "#87ceeb",
     },
     Text: {
         color: "#87ceeb",
@@ -185,9 +214,9 @@ const styles = StyleSheet.create({
     Text2: {
         color: "#87ceeb",
         fontSize: 15,
-        fontStyle: 'Italic',
+        fontStyle: 'normal',
         fontWeight: 'bold',
-        letterSpacing: 2,
+        letterSpacing: 0,
       },
 })
 

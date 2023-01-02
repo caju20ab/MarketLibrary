@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, Pressable } from 'react-native';
 
+//Her laves der et custom compenent i form af en universel knap der kan bruges rundt omkring i applikationen.
+
 const CustomButton = ({onPress, text, type = "PRIMARY", bgColor, fgColor}) => {
     return (
         <Pressable 

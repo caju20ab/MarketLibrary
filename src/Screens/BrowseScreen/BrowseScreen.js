@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 import 'firebase/firestore';
 import { TextInput } from 'react-native-paper';
 import SearchFilter, {createFilter} from 'react-native-search-filter';
+import { Ionicons } from '@expo/vector-icons';
+
 
 
 
@@ -14,14 +16,17 @@ import SearchFilter, {createFilter} from 'react-native-search-filter';
 
 const BrowseScreen = ({navigation, route}) => {
 
+  //Opretter variabler til firebase.firestore
+
   const firestore = firebase.firestore;
   const db = firebase.firestore();
 
+
+//opretter de forskellige states
   const [user, setUser] = useState({ loggedIn: false });
   const [books, setBooks] = useState([])
   const [searchTerm, setSearchTerm] = useState('');
 
-    //Definere navigation til at bruge min StackNavigator
     
         function onAuthStateChange(callback) {
             return firebase.auth().onAuthStateChanged(user => {
@@ -72,7 +77,8 @@ const BrowseScreen = ({navigation, route}) => {
         return (
         <View style = {styles.root}>
             <View>
-              <View>
+              <View style= {styles.containers}>
+              <Ionicons name="search" size={20} color="grey" style={styles.icon}/>
                 <TextInput
                   style={styles.searchBar}
                   onChangeText={searchUpdated} 
@@ -81,33 +87,27 @@ const BrowseScreen = ({navigation, route}) => {
                 />
               </View>
 
-                <FlatList
-                    numColumns={2}
-                    data={filteredBooks}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
+              <FlatList
+                numColumns={2}
+                data={filteredBooks}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.TouchableOpacity}
+                    onPress={() => navigation.navigate('BookDetails', { books: item })}
+                  >
+                    <View style={styles.bookContainer}>
+                      <Image
+                        source={{ uri: item.Image }}
+                        style={styles.bookCover}
+                      />
+                      <Text style={styles.bookTitle}>{item.Title}</Text>
+                      <Text style={styles.bookPrice}>{item.Price}</Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
 
-                     <TouchableOpacity
-                      style={styles.TouchableOpacity}
-                      onPress={() => navigation.navigate('BookDetails', { books: item })}
-                    >
-                       <View style={{ flex: 1, backgroundColor: '#eee', borderRadius: 10 }}>
-                          <Text style={styles.UsersDisplayText}>
-                            {item.Title} 
-                            <Image
-                               source={{ uri: item.Image }}
-                               style={{
-                                 width: 100,
-                                 height: 50,
-                                 borderRadius: 10,
-                                 marginTop: 10,
-                               }}
-                />
-                           </Text>
-                        </View>
-                    </TouchableOpacity>
-  )}
-/>
               </View>
               </View>
         )
@@ -118,54 +118,64 @@ const styles = StyleSheet.create({
   root:{
     backgroundColor: '#708090',
   },
+  icon: {
+    padding: 10,
+    margin: 5,   
+  }, 
+  containers: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e6e6fa',
+    borderWidth: .5,
+    borderColor: "#add8e6",
+    height: 50,
+    borderRadius: 5,
+    margin: 7
+  },
+  searchBar: {
+    width: '70%',
+    height: 50.5,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    marginVertical: 10,
+    flex: 1,
+    backgroundColor: "#e6e6fa"
+},
   title:{
         color: "#add8e6",
         fontSize: 22,
         textAlign: 'center',
         fontWeight: 'bold',
   },
-
   TouchableOpacity: {
     flex: 1,
     margin: 10,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    shadowColor: 'white',
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 5,
-    padding: 20,
+  },
+  bookContainer: {
+    flex: 1,
+    backgroundColor: '#eee',
+    borderRadius: 3,
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  UsersDisplayText:{
+  bookCover: {
+    width: 167,
+    height: 150,
+    borderRadius: 2,
+  },
+  bookTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginTop: 10,
     textAlign: 'center',
-    marginVertical: 8,
-    fontSize: 16,
-    fontStyle: "black"
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 10,
+  bookPrice: {
+    fontSize: 13,
+    marginTop: 10,
+    textAlign: 'center',
   },
-  author: {
-    fontSize: 18,
-    color: 'grey',
-    marginBottom: 20,
-  },
-  container: {
-    backgroundColor: '#fffacd',
-  },
-  searchContainer: {
-    padding: 10,
-  },
-  searchBar: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 10,
-    padding: 10,
-  },
+
 
 
 

@@ -1,3 +1,5 @@
+//Importerer alle de forskellige screens til navigering samt hjælpe komponenter til database konfigurering og React-Native frontend
+
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
@@ -29,16 +31,15 @@ import PhotoScreen from './src/Screens/CameraScreen/Camera';
 import { Ionicons } from '@expo/vector-icons';
 import { LogBox } from 'react-native';
 
+
+//Fjerner console warnings fra vores user interface. Dette blev en nødvendighed i sidste ende, da mange af vores dependency programmer 
+//var inkompatible i forhold til deres versionsnummer.  
 LogBox.ignoreLogs(['Warning: ...']); 
 LogBox.ignoreAllLogs();
 
 
 
-
-//Add SDKs for the i want to use 
-
-
-//Applikationen Firebase konfiguration
+//Applikationens Firebase konfiguration
 const firebaseConfig = {
   apiKey: "AIzaSyBC6Gh06IFiHbTovgyMQznav5o_jIeZkLs",
   authDomain: "awesomeproject-2f66b.firebaseapp.com",
@@ -49,31 +50,35 @@ const firebaseConfig = {
   databaseURL: "https://awesomeproject-2f66b-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
-//const db = getFirestore()
 
-
+//Opretter fire forskellige stacks, hvoraf en af disse er til authorization siderne, hvor brugerne kan logge ind, lave en profil osv.
+//De resterende tre stacks er til vores bottom navigator, når en bruger er logget ind.
 const AuthStack = createNativeStackNavigator ();
 const HomeStack = createNativeStackNavigator ();
 const NotifactionStack = createNativeStackNavigator ();
 const TableStack = createNativeStackNavigator ();
 
 
-
+//Definerer bottom navigatoren som skal vises når en bruger er logget ind
 const Tabs = createBottomTabNavigator();
 
 
+
+//Her oprettes selve serveren som omfatter alt logik og frontend 
 const App = () => {
 
-
+//Sætter useState for om en bruger er logget ind eller ej. Den initiale værde er false, således hver gang man åbner appen skal man logge ind først
   const [user, setUser] = useState({ loggedIn: false });
 
-  //Inspiration fra øvelsesholdene
+//Inspiration fra øvelsesholdene. If-erklæringen kontrollerer, om der allerede er initialiseret Firebase-apps. 
+//Hvis der ikke er nogen, initialiserer den en ny Firebase-app ved hjælp af firebase.initializeApp()-funktionen og firebaseConfig-objektet.
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
 
 
-    //Inspiration fra øvelsesholdene
+//Inspiration fra øvelsesholdene. Denne funktion lytter til ændringer i den aktuelle brugers godkendelsestilstand. 
+//Når staten for authentication ændres, kaldes funktionen med et callback, der modtager et objekt med en loggedIn-egenskab og en brugeregenskab.
   function onAuthStateChange(callback) {
     return firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -84,7 +89,8 @@ const App = () => {
     });
   }
 
-    //Inspiration fra øvelsesholdene
+  //Inspiration fra øvelsesholdene. UseEffect hooks anvendes her til at tage en funktion som et argument, og funktionen kaldes således hver gang komponenten render. 
+  //Funktionen skal indeholde al koden til side effekten, såsom opsætning af en lytter eller et API-kald.
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser);
     return () => {
@@ -92,6 +98,8 @@ const App = () => {
     };
   }, []);
 
+
+  //Laver vores navigator stack til hjemmetabben
   const HomeStackScreen = () => (
     <HomeStack.Navigator>
       <HomeStack.Screen 
@@ -127,6 +135,8 @@ const App = () => {
     </HomeStack.Navigator>
   )
 
+  //Laver vores navigator stack til SellTabben hvor man opretter en annonce
+
   const SellStackScreen = () => (
     <NotifactionStack.Navigator>
       <NotifactionStack.Screen 
@@ -148,6 +158,7 @@ const App = () => {
     </NotifactionStack.Navigator>
   )
 
+  //Laver vores navigator stack til BrowseTabben
   const BrowseStackScreen = () => (
     <TableStack.Navigator>
       <TableStack.Screen 
@@ -187,7 +198,6 @@ const App = () => {
 
 }})
 
-
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
@@ -198,26 +208,28 @@ const App = () => {
   if (isLoading) {
     return <NavigationContainer><Splash/></NavigationContainer>
   }
+  
 //https://www.youtube.com/watch?v=nQVCkqvU1uE Anvendt som inspiration til hele navigationsdelen i applikationen.
   return(
     <AuthContext.Provider value = {authContext}>
     <NavigationContainer>
       {userToken ? (
            <Tabs.Navigator screenOptions={{headerShown: false}}>
-           <Tabs.Screen 
-               name='Home' 
-               component={HomeStackScreen} 
-               options={{
-                 tabBarIcon: ({ focused, color, size }) => (
-                   <Ionicons name="ios-home" size={size} color={color} />
-                 ),
-           }}/>
+    
            <Tabs.Screen 
                name='Sell' 
                component={SellStackScreen}
                options={{
                  tabBarIcon: ({ focused, color, size }) => (
-                   <Ionicons name="create" size={size} color={color} />
+                   <Ionicons name="cash" size={size} color={'#87ceeb'} />
+                 ),
+           }}/>
+             <Tabs.Screen 
+               name='Home' 
+               component={HomeStackScreen} 
+               options={{
+                 tabBarIcon: ({ focused, color, size }) => (
+                   <Ionicons name="ios-home" size={size} color={'#87ceeb'} />
                  ),
            }}/>
    
@@ -226,7 +238,7 @@ const App = () => {
              component={BrowseStackScreen}
              options={{
                tabBarIcon: ({ focused, color, size }) => (
-                 <Ionicons name="book" size={size} color={color} />
+                 <Ionicons name="search-circle" size={size} color={'#87ceeb'} />
                ),
            }}/>
   

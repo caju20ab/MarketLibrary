@@ -6,6 +6,8 @@ import {StatusBar} from "expo-status-bar";
 //import * as MediaLibrary from "expo-mediaç-library";
 import SellScreen from "../SellScreen";
 
+//Hele kamera og fotobibliotek funktionerne er lavet med inspiration fra øvelserne lagt op på github
+//https://github.com/Innovationg-og-ny-teknologi-2021/7_camera_solution
 
 const PhotoScreen = ({navigation, route}) => {
 

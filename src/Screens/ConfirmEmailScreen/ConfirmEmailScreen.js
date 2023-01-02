@@ -6,11 +6,15 @@ import CustomButton from '../../Components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 
 const ConfirmEmailScreen = () => {
+
+    //Opstiller kode staten  
     const [code, setCode] = useState ('');
     
+    //Opretter en variabel til navigation
     const navigation = useNavigation ()
     
 
+    //Oprettes navigations logik til knapperne i frontend. Laves alle tre som funktioner.
     const OnConfirmPressed = () => {
         navigation.navigate ('Home')
         console.warn ('Sign In');
@@ -23,6 +27,7 @@ const ConfirmEmailScreen = () => {
         console.warn ('OnSignInPressed')
     }
 
+    
     const {height} = useWindowDimensions();
     return (
         <ScrollView>
