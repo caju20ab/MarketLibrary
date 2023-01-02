@@ -9,3 +9,6 @@ Fremgangsmåde til opstart af applikationen:
 6.	Kør "npm start / expo start"
 
 Denne fremgangsmåde er blevet brugt på 4 forskellige computere og har virket hver gang.
+
+
+LINK TIL VIDEO GENNEMGANG: https://youtu.be/RwQ3yHAMVO8
